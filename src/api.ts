@@ -10,11 +10,14 @@ const instance = axios.create(
     }
 )
 
+export type FilteredType = 'all' | 'active' | 'completed'
+
 export type TodolistMainType={
     id: string,
     title: string,
     addedDate?:string
     order?: number
+    filter: FilteredType
 }
 
 type ResponseType<T={}>={

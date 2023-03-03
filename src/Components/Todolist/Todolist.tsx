@@ -1,5 +1,5 @@
 import s from './Todolist.module.css'
-import {TaskMainType} from "../../api";
+import {FilteredType, TaskMainType} from "../../api";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
@@ -9,26 +9,29 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import {useState} from "react";
 
-type FilteredType = 'all' | 'active' | 'completed'
 
 type TodolistType = {
     tasks: TaskMainType[]
     title: string
     todoId: string
-    filter?: FilteredType
+    filter: FilteredType
+    removeTask: (todoId: string, taskId: string) => void
+    filteredTask: (todoId: string, filter: FilteredType) => void
+    addTask: (todoId: string, newTitle: string) => void
+
 }
 
 
-export const Todolist = ({tasks, title, todoId, filter}: TodolistType) => {
+export const Todolist = ({tasks, title, todoId, removeTask, filteredTask, addTask}: TodolistType) => {
+    const [text, setText] = useState('')
 
-
-    let filteredTasks = tasks
-    if (filter === 'active') {
-        filteredTasks.filter(f => !f.completed)
-    }
-    if (filter === 'completed') {
-        filteredTasks.filter(f => f.completed)
+    const addTaskHandler = () => {
+        if (text.trim() !== '') {
+            addTask(todoId, text.trim())
+            setText('')
+        }
     }
 
     return <div className={s.todolist}>
@@ -39,15 +42,18 @@ export const Todolist = ({tasks, title, todoId, filter}: TodolistType) => {
             </IconButton>
         </h3>
         <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
-            <TextField id="outlined-basic" label="Enter your task" variant="standard" margin={'none'}/>
-            <IconButton title={'Add todolist'}>
+            <TextField id="outlined-basic" label="Enter your task" variant="standard" margin={'none'}
+                       autoComplete={'off'}
+                       value={text}
+                       onChange={(e) => setText(e.currentTarget.value)}/>
+            <IconButton title={'Add todolist'} onClick={addTaskHandler}>
                 <AddCircleIcon/>
             </IconButton>
         </div>
 
         <ul style={{'paddingLeft': '15px'}}>
-            {tasks.map(el => {
-                return (
+            {tasks.map(el =>
+                (
                     <li key={el.id} style={{'listStyleType': 'none'}}>
                         <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
                             <div>
@@ -55,29 +61,34 @@ export const Todolist = ({tasks, title, todoId, filter}: TodolistType) => {
                                     icon={<BookmarkBorderIcon/>}
                                     checkedIcon={<BookmarkIcon/>}
                                     checked={el.completed}
-                                color={'error'}/>
+                                    color={'error'}/>
                                 <span>{el.title}</span>
                             </div>
                             <div>
-                                <IconButton aria-label="delete" title={'Remove task'} style={removeButtonStyle}
-                                            size={'small'}>
+                                <IconButton aria-label="delete"
+                                            title={'Remove task'}
+                                            style={removeButtonStyle}
+                                            size={'small'}
+                                            onClick={() => removeTask(todoId, el.id)}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </div>
                         </div>
                     </li>
-                )
-            })}
+                ))}
         </ul>
 
 
         <div>
             <Button variant="contained" color='inherit' className={s.buttonFilter}
-                    style={buttonFilteredStyle} title={'All tasks'}>All</Button>
+                    style={buttonFilteredStyle} title={'All tasks'}
+                    onClick={() => filteredTask(todoId, 'all')}>All</Button>
             <Button variant="contained" color='inherit' className={s.buttonFilter}
-                    style={buttonFilteredStyle} title={'Only active task'}>Active</Button>
+                    style={buttonFilteredStyle} title={'Only active task'}
+                    onClick={() => filteredTask(todoId, 'active')}>Active</Button>
             <Button variant="contained" color='inherit' className={s.buttonFilter}
-                    style={buttonFilteredStyle} title={'Completed tasks'}>Completed</Button>
+                    style={buttonFilteredStyle} title={'Completed tasks'}
+                    onClick={() => filteredTask(todoId, 'completed')}>Completed</Button>
         </div>
     </div>
 }
