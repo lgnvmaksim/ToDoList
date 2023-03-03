@@ -10,9 +10,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {addTaskAC, removeTaskAC, taskReducer} from "./reducers/taskReducer";
-import {filteredTaskAC, todolistReducer} from "./reducers/todolistReducer";
+import {addTaskAC, changeCompletedTaskAC, removeTaskAC, taskReducer} from "./reducers/taskReducer";
+import {addTodolistAC, filteredTaskAC, todolistReducer} from "./reducers/todolistReducer";
 import {FilteredType} from "./api";
+import {AddItemForm} from "./Components/AddItemForm";
 
 
 export const App = () => {
@@ -20,13 +21,12 @@ export const App = () => {
     let todolistID1 = v1()
     let todolistID2 = v1()
 
-
-    const [todolists, todoDispatch] =  useReducer(todolistReducer ,[
+    const [todolists, todoDispatch] = useReducer(todolistReducer, [
             {id: todolistID1, title: 'What to learn', filter: 'all'},
             {id: todolistID2, title: 'What to buy', filter: 'all'},
         ]
     )
-    const [tasks, taskDispatch]  = useReducer(taskReducer,{
+    const [tasks, taskDispatch] = useReducer(taskReducer, {
         [todolistID1]: [
             {id: v1(), title: "HTML&CSS", completed: true},
             {id: v1(), title: "JS", completed: true},
@@ -55,6 +55,15 @@ export const App = () => {
         taskDispatch(addTaskAC(todoId, newTitle))
     }
 
+    const changeCompletedTask = (todoId: string, taskId: string, completed: boolean) => {
+        taskDispatch(changeCompletedTaskAC(todoId, taskId, completed))
+    }
+
+    const addTodolist = (newTitle: string) => {
+        const action = addTodolistAC(newTitle)
+        todoDispatch(action)
+        taskDispatch(action)
+    }
 
 
     return <div style={{'height': '100vh', 'backgroundColor': 'blanchedalmond'}}>
@@ -77,6 +86,10 @@ export const App = () => {
         </AppBar>
         <Paper style={{'padding': '5px', 'marginTop': '10px', 'borderRadius': '10px', 'backgroundColor': '#f8e4d0'}}
                elevation={16}>
+            <AddItemForm addNewForm={addTodolist}
+                         label={'Enter new todolist'}
+                         variant={"outlined"}
+                         buttonTitle={'Add todolist'}/>
             <div>
                 <Container>
                     <Grid container spacing={3}>
@@ -88,33 +101,31 @@ export const App = () => {
                                 if (el.filter === 'completed') {
                                     filteredTasks = tasks[el.id].filter(f => f.completed)
                                 }
-                            return (
-                                <Grid item>
-                                    <Paper style={{
-                                        'padding': '5px',
-                                        'marginTop': '10px',
-                                        'borderRadius': '10px',
-                                        'backgroundColor': '#f8e4d0'
-                                    }} elevation={16}>
-
-
-                                        <Todolist
-                                            key={el.id}
-                                            todoId={el.id}
-                                            tasks={filteredTasks}
-                                            title={el.title}
-                                            removeTask={removeTask}
-                                            filter={el.filter}
-                                            filteredTask={filteredTask}
-                                            addTask={addTask}
-                                        />
-                                    </Paper>
-                                </Grid>
-                            )}
-                            )
+                                return (
+                                    <Grid item>
+                                        <Paper style={{
+                                            'padding': '5px',
+                                            'marginTop': '10px',
+                                            'borderRadius': '10px',
+                                            'backgroundColor': '#f8e4d0'
+                                        }} elevation={16}>
+                                            <Todolist
+                                                key={el.id}
+                                                todoId={el.id}
+                                                tasks={filteredTasks}
+                                                title={el.title}
+                                                removeTask={removeTask}
+                                                filter={el.filter}
+                                                filteredTask={filteredTask}
+                                                addTask={addTask}
+                                                changeCompletedTask={changeCompletedTask}
+                                            />
+                                        </Paper>
+                                    </Grid>
+                                )
+                            }
+                        )
                         }
-
-
                     </Grid>
                 </Container>
 

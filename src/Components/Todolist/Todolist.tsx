@@ -4,12 +4,10 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import {useState} from "react";
+import {AddItemForm} from "../AddItemForm";
 
 
 type TodolistType = {
@@ -20,19 +18,21 @@ type TodolistType = {
     removeTask: (todoId: string, taskId: string) => void
     filteredTask: (todoId: string, filter: FilteredType) => void
     addTask: (todoId: string, newTitle: string) => void
+    changeCompletedTask: (todoId: string, taskId: string, completed: boolean) => void
 
 }
 
 
-export const Todolist = ({tasks, title, todoId, removeTask, filteredTask, addTask}: TodolistType) => {
-    const [text, setText] = useState('')
+export const Todolist = ({
+                             tasks,
+                             title,
+                             todoId,
+                             removeTask,
+                             filteredTask,
+                             addTask,
+                             changeCompletedTask
+                         }: TodolistType) => {
 
-    const addTaskHandler = () => {
-        if (text.trim() !== '') {
-            addTask(todoId, text.trim())
-            setText('')
-        }
-    }
 
     return <div className={s.todolist}>
         <h3>
@@ -41,15 +41,11 @@ export const Todolist = ({tasks, title, todoId, removeTask, filteredTask, addTas
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>
-        <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
-            <TextField id="outlined-basic" label="Enter your task" variant="standard" margin={'none'}
-                       autoComplete={'off'}
-                       value={text}
-                       onChange={(e) => setText(e.currentTarget.value)}/>
-            <IconButton title={'Add todolist'} onClick={addTaskHandler}>
-                <AddCircleIcon/>
-            </IconButton>
-        </div>
+
+        <AddItemForm addNewForm={(newTitle) => addTask(todoId, newTitle)}
+                     label={'Enter your task'}
+                     variant={"standard"}
+                     buttonTitle={'Add task'}/>
 
         <ul style={{'paddingLeft': '15px'}}>
             {tasks.map(el =>
@@ -61,7 +57,8 @@ export const Todolist = ({tasks, title, todoId, removeTask, filteredTask, addTas
                                     icon={<BookmarkBorderIcon/>}
                                     checkedIcon={<BookmarkIcon/>}
                                     checked={el.completed}
-                                    color={'error'}/>
+                                    color={'error'}
+                                    onChange={(e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked)}/>
                                 <span>{el.title}</span>
                             </div>
                             <div>
