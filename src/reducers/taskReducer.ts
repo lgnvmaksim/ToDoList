@@ -7,9 +7,9 @@ export type TaskKeyType = {
 }
 
 
-// const initialState: TaskKeyType = {}
+const initialState: TaskKeyType = {}
 
-export const taskReducer = (state: TaskKeyType, action: ActionTaskType) => {
+export const taskReducer = (state: TaskKeyType=initialState, action: ActionTaskType) => {
     switch (action.type) {
         case "ADD-TODOLIST":{
             return {

@@ -19,6 +19,7 @@ type TodolistType = {
     filteredTask: (todoId: string, filter: FilteredType) => void
     addTask: (todoId: string, newTitle: string) => void
     changeCompletedTask: (todoId: string, taskId: string, completed: boolean) => void
+    removeTodolist: (todoId: string)=>void
 
 }
 
@@ -30,14 +31,16 @@ export const Todolist = ({
                              removeTask,
                              filteredTask,
                              addTask,
-                             changeCompletedTask
+                             changeCompletedTask,
+                             removeTodolist
                          }: TodolistType) => {
 
 
     return <div className={s.todolist}>
         <h3>
             {title}
-            <IconButton aria-label="delete" title={'Remove todolist'} style={removeButtonStyle}>
+            <IconButton aria-label="delete" title={'Remove todolist'} style={removeButtonStyle}
+            onClick={()=>removeTodolist(todoId)}>
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>

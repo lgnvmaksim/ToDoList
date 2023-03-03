@@ -9,9 +9,10 @@ type AddItemFormType ={
     label: string
     variant: undefined | "standard" | "filled" | "outlined"
     buttonTitle: string
+    style?: {}
 }
 
-export const AddItemForm = ({addNewForm, label, variant, buttonTitle}: AddItemFormType) => {
+export const AddItemForm = ({addNewForm, label, variant, buttonTitle,style}: AddItemFormType) => {
 
     const [text, setText] = useState('')
 
@@ -25,7 +26,9 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle}: AddItemFo
 
     return (
         <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
-            <TextField label={label} variant={variant} margin={'none'}
+            <TextField
+                style={style}
+                label={label} variant={variant} margin={'none'}
                        autoComplete={'off'}
                        value={text}
                        onChange={(e) => setText(e.currentTarget.value)}
