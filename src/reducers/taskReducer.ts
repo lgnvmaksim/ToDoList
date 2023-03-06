@@ -1,4 +1,4 @@
-import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../api";
+import {ModelType, taskApi, TaskMainType, TaskPriorities, TaskStatuses} from "../api";
 import {AddTodolistACType, GetTodolistACType} from "./todolistReducer";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
@@ -35,7 +35,7 @@ export const taskReducer = (state: TaskKeyType = initialState, action: ActionTas
                 ...state,
                 [action.todoId]: state[action.todoId].map(el => el.id === action.taskId ? {
                     ...el,
-                    status: action.status
+                    completed: action.completed
                 } : el)
             }
         }
@@ -58,8 +58,8 @@ export const addTaskAC = (todoId: string, newTask: TaskMainType) => ({
     type: 'ADD-TASK', todoId, newTask
 } as const)
 
-export const changeCompletedTaskAC = (todoId: string, taskId: string, status: TaskStatuses) => ({
-    type: 'CHANGE-COMPLETED-TASK', todoId, taskId, status
+export const changeCompletedTaskAC = (todoId: string, taskId: string, completed: boolean) => ({
+    type: 'CHANGE-COMPLETED-TASK', todoId, taskId, completed
 } as const)
 
 const getTaskForEmptyTodoAC = (todoId: string, tasks: TaskMainType[]) => ({
@@ -90,22 +90,21 @@ export const createTaskTC = (todoId: string, title: string) =>
             .then(res => dispatch(addTaskAC(todoId, res.data.data.item)))
     }
 
-export const changeCompletedTaskTC = (todoId: string, taskId: string, status: TaskStatuses) =>
+export const changeCompletedTaskTC = (todoId: string, taskId: string, completed: boolean) =>
     (dispatch: Dispatch, getState: () => AppRootStateType) => {
-        let task = getState().tasks[todoId].find(el=>el.id===taskId)
+        const task = getState().tasks[todoId].find(el => el.id === taskId)
         if (task) {
             let model: ModelType = {
                 title: task.title,
                 description: task.description,
                 completed: task.completed,
-                status,
+                status: task.status,
                 priority: task.priority,
                 startDate: task.startDate,
-                deadline: task.deadline,
-                }
+                deadline: task.deadline,}
 
         taskApi.updateTask(todoId, taskId, model)
-            .then(()=>dispatch(changeCompletedTaskAC(todoId, taskId, status)))
+            .then(()=>changeCompletedTaskAC(todoId, taskId, completed))
         }
     }
 

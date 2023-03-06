@@ -1,5 +1,5 @@
 import s from './Todolist.module.css'
-import {FilteredType, TaskMainType, TaskStatuses} from "../../api";
+import {FilteredType, TaskMainType} from "../../api";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
@@ -21,8 +21,8 @@ type TodolistType = {
     removeTask: (todoId: string, taskId: string) => void
     filteredTask: (todoId: string, filter: FilteredType) => void
     addTask: (todoId: string, newTitle: string) => void
-    changeCompletedTask: (todoId: string, taskId: string, status: TaskStatuses) => void
-    removeTodolist: (todoId: string) => void
+    changeCompletedTask: (todoId: string, taskId: string, completed: boolean) => void
+    removeTodolist: (todoId: string)=>void
 
 }
 
@@ -40,15 +40,15 @@ export const Todolist = ({
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
+    useEffect(()=>{
         dispatch(getTaskForEmptyTodoTC(todoId))
-    }, [])
+    },[])
 
     return <div className={s.todolist}>
         <h3>
             {title}
             <IconButton aria-label="delete" title={'Remove todolist'} style={removeButtonStyle}
-                        onClick={() => removeTodolist(todoId)}>
+            onClick={()=>removeTodolist(todoId)}>
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>
@@ -67,10 +67,9 @@ export const Todolist = ({
                                 <Checkbox
                                     icon={<BookmarkBorderIcon/>}
                                     checkedIcon={<BookmarkIcon/>}
-                                    checked={el.status===TaskStatuses.Completed}
+                                    checked={el.completed}
                                     color={'error'}
-                                    onChange={
-                                        (e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)}/>
+                                    onChange={(e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked)}/>
                                 <span>{el.title}</span>
                             </div>
                             <div>
