@@ -1,7 +1,7 @@
-import {taskApi, TaskMainType} from "../api";
-import {v1} from "uuid";
+import {ModelType, taskApi, TaskMainType, TaskPriorities, TaskStatuses} from "../api";
 import {AddTodolistACType, GetTodolistACType} from "./todolistReducer";
 import {Dispatch} from "redux";
+import {AppRootStateType} from "../store";
 
 export type TaskKeyType = {
     [key: string]: TaskMainType[]
@@ -12,7 +12,7 @@ const initialState: TaskKeyType = {}
 
 export const taskReducer = (state: TaskKeyType = initialState, action: ActionTaskType) => {
     switch (action.type) {
-        case "GET-TASKS-FOR-EMPTY-TODO":{
+        case "GET-TASKS-FOR-EMPTY-TODO": {
             return {
                 ...state, [action.todoId]: action.tasks
             }
@@ -43,7 +43,6 @@ export const taskReducer = (state: TaskKeyType = initialState, action: ActionTas
             return {...state, [action.todoId]: state[action.todoId].filter(f => f.id !== action.taskId)}
         }
         case "ADD-TASK": {
-            // let newTask = {id: v1(), title: action.newTitle, completed: true}
             return {
                 ...state, [action.todoId]: [action.newTask, ...state[action.todoId]]
             }
@@ -73,23 +72,41 @@ const getTaskForEmptyTodoAC = (todoId: string, tasks: TaskMainType[]) => ({
 
 export const getTaskForEmptyTodoTC = (todoId: string) =>
     (dispatch: Dispatch) => {
-    taskApi.getTasks(todoId)
-        .then(res =>(
-            dispatch(getTaskForEmptyTodoAC(todoId ,res.data.items))
-        ))
-}
+        taskApi.getTasks(todoId)
+            .then(res => (
+                dispatch(getTaskForEmptyTodoAC(todoId, res.data.items))
+            ))
+    }
 
 export const removeTaskTC = (todoId: string, taskId: string) =>
     (dispatch: Dispatch) => {
-    taskApi.deleteTask(todoId, taskId)
-        .then(()=>dispatch(removeTaskAC(todoId, taskId)))
-}
+        taskApi.deleteTask(todoId, taskId)
+            .then(() => dispatch(removeTaskAC(todoId, taskId)))
+    }
 
 export const createTaskTC = (todoId: string, title: string) =>
-    (dispatch: Dispatch)=> {
-taskApi.createTask(todoId, title)
-    .then(res=> dispatch(addTaskAC(todoId, res.data.data.item)))
-}
+    (dispatch: Dispatch) => {
+        taskApi.createTask(todoId, title)
+            .then(res => dispatch(addTaskAC(todoId, res.data.data.item)))
+    }
+
+export const changeCompletedTaskTC = (todoId: string, taskId: string, completed: boolean) =>
+    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        const task = getState().tasks[todoId].find(el => el.id === taskId)
+        if (task) {
+            let model: ModelType = {
+                title: task.title,
+                description: task.description,
+                completed: task.completed,
+                status: task.status,
+                priority: task.priority,
+                startDate: task.startDate,
+                deadline: task.deadline,}
+
+        taskApi.updateTask(todoId, taskId, model)
+            .then(()=>changeCompletedTaskAC(todoId, taskId, completed))
+        }
+    }
 
 //After the line there will be types of action-creators
 //_________________________________________________________________

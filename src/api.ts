@@ -48,20 +48,20 @@ export enum TaskPriorities {
 }
 
 export type TaskMainType = {
-    description?: string
+    description: string
     title: string
     completed: boolean
-    status?: TaskStatuses
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
     id: string
-    todoListId?: string
-    order?: number
-    addedDate?: string
+    todoListId: string
+    order: number
+    addedDate: string
 }
 
-type ModelType={
+export type ModelType={
     title: string
     description:string
     completed: boolean

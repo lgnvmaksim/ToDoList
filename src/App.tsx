@@ -9,7 +9,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {addTaskAC, changeCompletedTaskAC, createTaskTC, removeTaskTC, TaskKeyType} from "./reducers/taskReducer";
+import {
+    addTaskAC,
+    changeCompletedTaskAC,
+    changeCompletedTaskTC,
+    createTaskTC,
+    removeTaskTC,
+    TaskKeyType
+} from "./reducers/taskReducer";
 import {addTodolistAC, filteredTaskAC, getTodolistTC, removeTodolistAC} from "./reducers/todolistReducer";
 import {FilteredType, TodolistMainType} from "./api";
 import {AddItemForm} from "./Components/AddItemForm";
@@ -40,7 +47,7 @@ export const App = () => {
     }
 
     const changeCompletedTask = (todoId: string, taskId: string, completed: boolean) => {
-        dispatch(changeCompletedTaskAC(todoId, taskId, completed))
+        dispatch(changeCompletedTaskTC(todoId, taskId, completed))
     }
 
     const addTodolist = (newTitle: string) => {
