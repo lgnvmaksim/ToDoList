@@ -8,6 +8,9 @@ import Checkbox from '@mui/material/Checkbox';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {AddItemForm} from "../AddItemForm";
+import {useEffect} from "react";
+import {useAppDispatch} from "../../store";
+import {getTaskForEmptyTodoTC} from "../../reducers/taskReducer";
 
 
 type TodolistType = {
@@ -35,6 +38,11 @@ export const Todolist = ({
                              removeTodolist
                          }: TodolistType) => {
 
+    const dispatch = useAppDispatch()
+
+    useEffect(()=>{
+        dispatch(getTaskForEmptyTodoTC(todoId))
+    },[])
 
     return <div className={s.todolist}>
         <h3>
