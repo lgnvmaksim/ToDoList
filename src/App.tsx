@@ -11,16 +11,16 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {
     changeCompletedTaskTC,
-    changeTaskTitleAC,
+    changeTaskTitleTC,
     createTaskTC,
     removeTaskTC,
     TaskKeyType
 } from "./reducers/taskReducer";
 import {
     addNewTodolistTC,
+    changeTodolistTitleTC,
     filteredTaskAC,
     getTodolistTC,
-    removeTodolistAC,
     removeTodolistTC
 } from "./reducers/todolistReducer";
 import {FilteredType, TaskStatuses, TodolistMainType} from "./api";
@@ -66,7 +66,11 @@ export const App = () => {
     }
 
     const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(todoId, taskId, newTitle))
+        dispatch(changeTaskTitleTC(todoId, taskId, newTitle))
+    }
+
+    const changeTodolistTitle = (todoId: string, newTitle: string) => {
+        dispatch(changeTodolistTitleTC(todoId, newTitle))
     }
 
 
@@ -102,10 +106,10 @@ export const App = () => {
                         {todolists.map(el => {
                                 let filteredTasks = tasks[el.id]
                                 if (el.filter === 'active') {
-                                    filteredTasks = tasks[el.id].filter(f => !f.completed)
+                                    filteredTasks = tasks[el.id].filter(f => !f.status)
                                 }
                                 if (el.filter === 'completed') {
-                                    filteredTasks = tasks[el.id].filter(f => f.completed)
+                                    filteredTasks = tasks[el.id].filter(f => f.status)
                                 }
                                 return (
                                     <Grid item>
@@ -121,12 +125,12 @@ export const App = () => {
                                                 tasks={filteredTasks}
                                                 title={el.title}
                                                 removeTask={removeTask}
-                                                filter={el.filter}
                                                 filteredTask={filteredTask}
                                                 addTask={addTask}
                                                 changeCompletedTask={changeCompletedTask}
                                                 removeTodolist={removeTodolist}
                                                 changeTaskTitle={changeTaskTitle}
+                                                changeTodolistTitle={changeTodolistTitle}
                                             />
                                         </Paper>
                                     </Grid>
@@ -136,10 +140,7 @@ export const App = () => {
                         }
                     </Grid>
                 </Container>
-
             </div>
         </Paper>
-
-
     </div>
 }

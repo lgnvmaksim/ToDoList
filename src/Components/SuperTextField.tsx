@@ -1,35 +1,35 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 
-type SuperTextFieldType ={
+type SuperTextFieldType = {
     title: string
-    newTitle: (text: string)=>void
+    newTitleCallback: (text: string) => void
+    styleWidth?: { }
 
 }
 
-export const SuperTextField = ({title, newTitle}: SuperTextFieldType) => {
+export const SuperTextField = ({title, newTitleCallback, styleWidth}: SuperTextFieldType) => {
     const [text, setText] = useState(title)
     const [open, setOpen] = useState(false)
 
     const openMode = () => {
         setOpen(!open)
-        newTitle(text)
-    }
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.currentTarget.value)
-
+        if (text.trim() !== '') {
+            newTitleCallback(text.trim())
+    } else {
+             setText(title)
+        }
     }
 
     return open
         ? <TextField
             onBlur={openMode}
             autoFocus value={text}
-            onChange={onChangeHandler}
+            onChange={(e) => setText(e.currentTarget.value)}
             size={'small'}
-        style={{width: '140px', }}/>
-        : <span onClick={openMode} >{title}</span>
-
+            style={styleWidth}
+            onKeyDown={(e)=>{if (e.key === 'Enter') {openMode()} }}/>
+        : <span onClick={openMode}>{title}</span>
 
 
 }

@@ -18,13 +18,13 @@ type TodolistType = {
     tasks: TaskMainType[]
     title: string
     todoId: string
-    filter: FilteredType
     removeTask: (todoId: string, taskId: string) => void
     filteredTask: (todoId: string, filter: FilteredType) => void
     addTask: (todoId: string, newTitle: string) => void
     changeCompletedTask: (todoId: string, taskId: string, status: TaskStatuses) => void
     removeTodolist: (todoId: string) => void
     changeTaskTitle:(todoId: string, taskId: string, newTitle: string)=>void
+    changeTodolistTitle:(todoId: string, newTitle: string)=>void
 
 }
 
@@ -38,7 +38,8 @@ export const Todolist = ({
                              addTask,
                              changeCompletedTask,
                              removeTodolist,
-                             changeTaskTitle
+                             changeTaskTitle,
+                             changeTodolistTitle
                          }: TodolistType) => {
 
     const dispatch = useAppDispatch()
@@ -49,18 +50,16 @@ export const Todolist = ({
 
     return <div className={s.todolist}>
         <h3>
-            {title}
+           <SuperTextField title={title} newTitleCallback={(newText)=>changeTodolistTitle(todoId, newText)} styleWidth={{width: '185px'}}/>
             <IconButton aria-label="delete" title={'Remove todolist'} style={removeButtonStyle}
                         onClick={() => removeTodolist(todoId)}>
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>
-
         <AddItemForm addNewForm={(newTitle) => addTask(todoId, newTitle)}
                      label={'Enter your task'}
                      variant={"standard"}
                      buttonTitle={'Add task'}/>
-
         <ul style={{'paddingLeft': '15px'}}>
             {tasks.map(el =>
                 (
@@ -73,7 +72,9 @@ export const Todolist = ({
                                     checked={el.status === TaskStatuses.Completed}
                                     color={'error'}
                                     onChange={(e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)}/>
-                                <SuperTextField title={el.title} newTitle={(text)=>changeTaskTitle(todoId, el.id, text)}/>
+                                <SuperTextField title={el.title}
+                                                newTitleCallback={(text)=>changeTaskTitle(todoId, el.id, text)}
+                                styleWidth={{width: '140px'}}/>
                             </div>
                             <div>
                                 <IconButton aria-label="delete"

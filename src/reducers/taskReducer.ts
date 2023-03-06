@@ -121,6 +121,25 @@ export const changeCompletedTaskTC = (todoId: string, taskId: string, status: Ta
             .then(()=>dispatch(changeCompletedTaskAC(todoId, taskId, status)))
         }
     }
+    
+    export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
+        (dispatch: Dispatch, getState: () => AppRootStateType) => {
+            let tasks = getState().tasks[todoId].find(el=>el.id===taskId)
+            if (tasks) {
+                let model: ModelType = {
+                    title: newTitle,
+                    description: tasks.description,
+                    completed: tasks.completed,
+                    status: tasks.status,
+                    priority: tasks.priority,
+                    startDate: tasks.startDate,
+                    deadline: tasks.deadline,
+                }
+                taskApi.updateTask(todoId, taskId, model)
+                    .then(()=>dispatch(changeTaskTitleAC(todoId, taskId, newTitle)))
+            }
+        
+    }
 
 //After the line there will be types of action-creators
 //_________________________________________________________________
