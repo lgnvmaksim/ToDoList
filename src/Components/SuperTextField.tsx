@@ -27,8 +27,8 @@ export const SuperTextField = ({title, newTitle}: SuperTextFieldType) => {
             autoFocus value={text}
             onChange={onChangeHandler}
             size={'small'}
-        style={{width: '130px', }}/>
-        : <span onClick={openMode}>{title}</span>
+        style={{width: '140px', }}/>
+        : <span onClick={openMode} >{title}</span>
 
 
 
