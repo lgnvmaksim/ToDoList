@@ -18,7 +18,7 @@ import {
     TaskKeyType
 } from "./reducers/taskReducer";
 import {addTodolistAC, filteredTaskAC, getTodolistTC, removeTodolistAC} from "./reducers/todolistReducer";
-import {FilteredType, TodolistMainType} from "./api";
+import {FilteredType, TaskStatuses, TodolistMainType} from "./api";
 import {AddItemForm} from "./Components/AddItemForm";
 import {useAppDispatch, useAppSelector} from "./store";
 
@@ -46,8 +46,8 @@ export const App = () => {
         dispatch(createTaskTC(todoId, newTitle))
     }
 
-    const changeCompletedTask = (todoId: string, taskId: string, completed: boolean) => {
-        dispatch(changeCompletedTaskTC(todoId, taskId, completed))
+    const changeCompletedTask = (todoId: string, taskId: string, status: TaskStatuses) => {
+        dispatch(changeCompletedTaskTC(todoId, taskId, status))
     }
 
     const addTodolist = (newTitle: string) => {
