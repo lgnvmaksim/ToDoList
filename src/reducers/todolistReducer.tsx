@@ -1,5 +1,4 @@
 import {FilteredType, todolistApi, TodolistMainType} from "../api";
-import {v1} from "uuid";
 import {Dispatch} from "redux";
 
 const initialState: TodolistMainType[] = []
@@ -13,8 +12,9 @@ export const todolistReducer = (state: TodolistMainType[] = initialState, action
             return state.filter(f => f.id !== action.todoId)
         }
         case "ADD-TODOLIST": {
-            let newTodo: TodolistMainType = {id: action.todoId, title: action.newTitle, filter: 'all'}
-            return [newTodo, ...state]
+            // let newTodo: TodolistMainType = {id: action.todoId, title: action.newTitle, filter: 'all'}
+            let newTodolist: TodolistMainType = {...action.todolists, filter: 'all'}
+            return [newTodolist, ...state]
         }
         case "FILTERED-TASK": {
             return state.map(el => el.id === action.todoId ? {...el, filter: action.filter} : el)
@@ -28,10 +28,10 @@ export const filteredTaskAC = (todoId: string, filter: FilteredType) => ({
     type: 'FILTERED-TASK', todoId, filter
 } as const)
 
-export const addTodolistAC = (newTitle: string) => {
-    let todoId = v1()
+export const addTodolistAC = (todolists: TodolistMainType) => {
+    // let todoId = v1()
     return {
-        type: 'ADD-TODOLIST', todoId, newTitle
+        type: 'ADD-TODOLIST', todolists
     } as const
 }
 
@@ -50,10 +50,21 @@ export const getTodolistAC = (todolist: TodolistMainType[]) => ({
 
 export const getTodolistTC = () =>
     (dispatch: Dispatch) => {
-    todolistApi.getTodolist()
-        .then(res=>(
-            dispatch(getTodolistAC(res.data))
-        ))
+        todolistApi.getTodolist()
+            .then(res => (
+                dispatch(getTodolistAC(res.data))
+            ))
+    }
+
+export const addNewTodolistTC = (newTitle: string) =>
+    (dispatch: Dispatch) => {
+    todolistApi.createTodolist(newTitle)
+        .then(res=>dispatch(addTodolistAC(res.data.data.item)))
+    }
+    
+export const removeTodolistTC = (todoId: string) => (dispatch: Dispatch)=> {
+   todolistApi.deleteTodolist(todoId)
+       .then(()=>dispatch(removeTodolistAC(todoId)))
 }
 
 //After the line there will be types of action-creators

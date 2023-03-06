@@ -12,6 +12,15 @@ const initialState: TaskKeyType = {}
 
 export const taskReducer = (state: TaskKeyType = initialState, action: ActionTaskType) => {
     switch (action.type) {
+        case "CHANGE-TASK-TITLE":{
+            return {
+                ...state,
+                [action.todoId]: state[action.todoId].map(el => el.id === action.taskId ? {
+                    ...el,
+                   title: action.newTitle
+                } : el)
+            }
+        }
         case "GET-TASKS-FOR-EMPTY-TODO": {
             return {
                 ...state, [action.todoId]: action.tasks
@@ -27,7 +36,7 @@ export const taskReducer = (state: TaskKeyType = initialState, action: ActionTas
         }
         case "ADD-TODOLIST": {
             return {
-                ...state, [action.todoId]: []
+                ...state, [action.todolists.id]: []
             }
         }
         case "CHANGE-COMPLETED-TASK": {
@@ -65,6 +74,10 @@ export const changeCompletedTaskAC = (todoId: string, taskId: string, status: Ta
 const getTaskForEmptyTodoAC = (todoId: string, tasks: TaskMainType[]) => ({
     type: 'GET-TASKS-FOR-EMPTY-TODO', todoId, tasks
 } as const)
+
+export const changeTaskTitleAC = (todoId: string, taskId: string, newTitle: string) => ({
+type: 'CHANGE-TASK-TITLE', todoId, taskId, newTitle
+}as const)
 
 
 //After the line there will be thunk-creators
@@ -119,5 +132,6 @@ type ActionTaskType =
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof changeCompletedTaskAC>
     | ReturnType<typeof getTaskForEmptyTodoAC>
+    | ReturnType<typeof changeTaskTitleAC>
 
 

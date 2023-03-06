@@ -23,7 +23,6 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle,style}: Add
         }
     }
 
-
     return (
         <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
             <TextField
@@ -33,6 +32,7 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle,style}: Add
                        value={text}
                        onChange={(e) => setText(e.currentTarget.value)}
                        onKeyDown={(e)=>{if (e.key === 'Enter') {addTaskHandler()} }}/>
+
             <IconButton title={buttonTitle} onClick={addTaskHandler}>
                 <AddCircleIcon/>
             </IconButton>

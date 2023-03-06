@@ -10,15 +10,20 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {
-    addTaskAC,
-    changeCompletedTaskAC,
     changeCompletedTaskTC,
+    changeTaskTitleAC,
     createTaskTC,
     removeTaskTC,
     TaskKeyType
 } from "./reducers/taskReducer";
-import {addTodolistAC, filteredTaskAC, getTodolistTC, removeTodolistAC} from "./reducers/todolistReducer";
-import {FilteredType, TodolistMainType} from "./api";
+import {
+    addNewTodolistTC,
+    filteredTaskAC,
+    getTodolistTC,
+    removeTodolistAC,
+    removeTodolistTC
+} from "./reducers/todolistReducer";
+import {FilteredType, TaskStatuses, TodolistMainType} from "./api";
 import {AddItemForm} from "./Components/AddItemForm";
 import {useAppDispatch, useAppSelector} from "./store";
 
@@ -46,18 +51,22 @@ export const App = () => {
         dispatch(createTaskTC(todoId, newTitle))
     }
 
-    const changeCompletedTask = (todoId: string, taskId: string, completed: boolean) => {
-        dispatch(changeCompletedTaskTC(todoId, taskId, completed))
+    const changeCompletedTask = (todoId: string, taskId: string, status: TaskStatuses) => {
+        dispatch(changeCompletedTaskTC(todoId, taskId, status))
     }
 
     const addTodolist = (newTitle: string) => {
-        dispatch(addTodolistAC(newTitle))
+        dispatch(addNewTodolistTC(newTitle))
 
     }
 
     const removeTodolist = (todoId: string) => {
-        dispatch(removeTodolistAC(todoId))
+        dispatch(removeTodolistTC(todoId))
         delete tasks[todoId]
+    }
+
+    const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
+        dispatch(changeTaskTitleAC(todoId, taskId, newTitle))
     }
 
 
@@ -117,6 +126,7 @@ export const App = () => {
                                                 addTask={addTask}
                                                 changeCompletedTask={changeCompletedTask}
                                                 removeTodolist={removeTodolist}
+                                                changeTaskTitle={changeTaskTitle}
                                             />
                                         </Paper>
                                     </Grid>

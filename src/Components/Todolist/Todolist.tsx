@@ -1,5 +1,5 @@
 import s from './Todolist.module.css'
-import {FilteredType, TaskMainType} from "../../api";
+import {FilteredType, TaskMainType, TaskStatuses} from "../../api";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
@@ -8,9 +8,10 @@ import Checkbox from '@mui/material/Checkbox';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {AddItemForm} from "../AddItemForm";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useAppDispatch} from "../../store";
 import {getTaskForEmptyTodoTC} from "../../reducers/taskReducer";
+import {SuperTextField} from "../SuperTextField";
 
 
 type TodolistType = {
@@ -21,8 +22,9 @@ type TodolistType = {
     removeTask: (todoId: string, taskId: string) => void
     filteredTask: (todoId: string, filter: FilteredType) => void
     addTask: (todoId: string, newTitle: string) => void
-    changeCompletedTask: (todoId: string, taskId: string, completed: boolean) => void
-    removeTodolist: (todoId: string)=>void
+    changeCompletedTask: (todoId: string, taskId: string, status: TaskStatuses) => void
+    removeTodolist: (todoId: string) => void
+    changeTaskTitle:(todoId: string, taskId: string, newTitle: string)=>void
 
 }
 
@@ -35,20 +37,21 @@ export const Todolist = ({
                              filteredTask,
                              addTask,
                              changeCompletedTask,
-                             removeTodolist
+                             removeTodolist,
+                             changeTaskTitle
                          }: TodolistType) => {
 
     const dispatch = useAppDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getTaskForEmptyTodoTC(todoId))
-    },[])
+    }, [])
 
     return <div className={s.todolist}>
         <h3>
             {title}
             <IconButton aria-label="delete" title={'Remove todolist'} style={removeButtonStyle}
-            onClick={()=>removeTodolist(todoId)}>
+                        onClick={() => removeTodolist(todoId)}>
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>
@@ -67,10 +70,10 @@ export const Todolist = ({
                                 <Checkbox
                                     icon={<BookmarkBorderIcon/>}
                                     checkedIcon={<BookmarkIcon/>}
-                                    checked={el.completed}
+                                    checked={el.status === TaskStatuses.Completed}
                                     color={'error'}
-                                    onChange={(e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked)}/>
-                                <span>{el.title}</span>
+                                    onChange={(e) => changeCompletedTask(todoId, el.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)}/>
+                                <SuperTextField title={el.title} newTitle={(text)=>changeTaskTitle(todoId, el.id, text)}/>
                             </div>
                             <div>
                                 <IconButton aria-label="delete"

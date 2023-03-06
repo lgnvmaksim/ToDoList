@@ -15,8 +15,8 @@ export type FilteredType = 'all' | 'active' | 'completed'
 export type TodolistMainType={
     id: string,
     title: string,
-    addedDate?:string
-    order?: number
+    addedDate:string
+    order: number
     filter: FilteredType
 }
 
@@ -33,10 +33,10 @@ export type TaskItemsType ={
 }
 
 export enum TaskStatuses {
-    // New = 0,
-    // InProgress = 1,
-    // Completed = 2,
-    // Draft = 3
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
 }
 
 export enum TaskPriorities {
