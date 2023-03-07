@@ -39,6 +39,10 @@ export const App = () => {
     const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
     const tasks = useAppSelector<TaskKeyType>(state => state.tasks)
 
+    const addTodolist = (newTitle: string) => {
+        dispatch(addNewTodolistTC(newTitle))
+    }
+
     const removeTask = (todoId: string, taskId: string) => {
         dispatch(removeTaskTC(todoId, taskId))
     }
@@ -55,10 +59,7 @@ export const App = () => {
         dispatch(changeCompletedTaskTC(todoId, taskId, status))
     }
 
-    const addTodolist = (newTitle: string) => {
-        dispatch(addNewTodolistTC(newTitle))
 
-    }
 
     const removeTodolist = (todoId: string) => {
         dispatch(removeTodolistTC(todoId))
