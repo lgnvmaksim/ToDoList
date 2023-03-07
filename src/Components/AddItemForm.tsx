@@ -4,38 +4,47 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 
-type AddItemFormType ={
-    addNewForm: (newTitle: string)=>void
+type AddItemFormType = {
+    addNewForm: (newTitle: string) => void
     label: string
     variant: undefined | "standard" | "filled" | "outlined"
     buttonTitle: string
     style?: {}
 }
 
-export const AddItemForm = ({addNewForm, label, variant, buttonTitle,style}: AddItemFormType) => {
+export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: AddItemFormType) => {
 
     const [text, setText] = useState('')
-
+    const [error, setError] = useState<null | string>('')
     const addTaskHandler = () => {
         if (text.trim() !== '') {
             addNewForm(text.trim())
             setText('')
+        } else {
+            setError(null)
         }
     }
 
-    return (
-        <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
-            <TextField
-                style={style}
-                label={label} variant={variant} margin={'none'}
-                       autoComplete={'off'}
-                       value={text}
-                       onChange={(e) => setText(e.currentTarget.value)}
-                       onKeyDown={(e)=>{if (e.key === 'Enter') {addTaskHandler()} }}/>
 
-            <IconButton title={buttonTitle} onClick={addTaskHandler}>
-                <AddCircleIcon/>
-            </IconButton>
+
+    return <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
+                <TextField
+                    error={error===null}
+                    style={style}
+                    label={error===null ? 'Please, enter correct value' : label} variant={variant} margin={'none'}
+                    autoComplete={'off'}
+                    value={text}
+                    onChange={(e) => {
+                        setText(e.currentTarget.value)
+                        setError('')
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            addTaskHandler()
+                        }
+                    }}/>
+                <IconButton title={buttonTitle} onClick={addTaskHandler}>
+                    <AddCircleIcon/>
+                </IconButton>
         </div>
-    );
 };
