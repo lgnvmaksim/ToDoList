@@ -9,44 +9,78 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {AddItemForm} from "../AddItemForm";
 import React, {useEffect} from "react";
-import {useAppDispatch} from "../../store";
-import {getTaskForEmptyTodoTC} from "../../reducers/taskReducer";
+import {useAppDispatch, useAppSelector} from "../../store";
+import {
+    changeCompletedTaskTC,
+    changeTaskTitleTC,
+    createTaskTC,
+    getTaskForEmptyTodoTC,
+    removeTaskTC
+} from "../../reducers/taskReducer";
 import {SuperTextField} from "../SuperTextField";
+import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolistReducer";
 
 
 type TodolistType = {
-    tasks: TaskMainType[]
     title: string
     todoId: string
-    removeTask: (todoId: string, taskId: string) => void
-    filteredTask: (todoId: string, filter: FilteredType) => void
-    addTask: (todoId: string, newTitle: string) => void
-    changeCompletedTask: (todoId: string, taskId: string, status: TaskStatuses) => void
-    removeTodolist: (todoId: string) => void
-    changeTaskTitle:(todoId: string, taskId: string, newTitle: string)=>void
-    changeTodolistTitle:(todoId: string, newTitle: string)=>void
+    filter: FilteredType
 
 }
 
 
 export const Todolist = ({
-                             tasks,
+
                              title,
                              todoId,
-                             removeTask,
-                             filteredTask,
-                             addTask,
-                             changeCompletedTask,
-                             removeTodolist,
-                             changeTaskTitle,
-                             changeTodolistTitle
+                             filter
                          }: TodolistType) => {
+
+
+    let tasks = useAppSelector<TaskMainType[]>(state => state.tasks[todoId])
 
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(getTaskForEmptyTodoTC(todoId))
     }, [])
+
+    const removeTask = (todoId: string, taskId: string) => {
+        dispatch(removeTaskTC(todoId, taskId))
+    }
+
+    const filteredTask = (todoId: string, filter: FilteredType) => {
+        dispatch(filteredTaskAC(todoId, filter))
+    }
+
+    const addTask = (todoId: string, newTitle: string) => {
+        dispatch(createTaskTC(todoId, newTitle))
+    }
+
+    const changeCompletedTask = (todoId: string, taskId: string, status: TaskStatuses) => {
+        dispatch(changeCompletedTaskTC(todoId, taskId, status))
+    }
+
+    const removeTodolist = (todoId: string) => {
+        dispatch(removeTodolistTC(todoId))
+        // delete tasks[todoId]
+    }
+
+    const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
+        dispatch(changeTaskTitleTC(todoId, taskId, newTitle))
+    }
+
+    const changeTodolistTitle = (todoId: string, newTitle: string) => {
+        dispatch(changeTodolistTitleTC(todoId, newTitle))
+    }
+
+    if (filter === 'completed') {
+        tasks = tasks.filter(f => f.status===TaskStatuses.Completed)
+    }
+    if (filter === 'active') {
+        tasks = tasks.filter(f => f.status===TaskStatuses.New)
+    }
+
 
     return <div className={s.todolist}>
         <h3>
@@ -62,6 +96,7 @@ export const Todolist = ({
                      buttonTitle={'Add task'}/>
         <ul style={{'paddingLeft': '15px'}}>
             {tasks.map(el =>
+
                 (
                     <li key={el.id} style={{'listStyleType': 'none'}}>
                         <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
@@ -98,6 +133,7 @@ export const Todolist = ({
             <Button variant="contained" color='inherit' className={s.buttonFilter}
                     style={buttonFilteredStyle} title={'Only active task'}
                     onClick={() => filteredTask(todoId, 'active')}>Active</Button>
+
             <Button variant="contained" color='inherit' className={s.buttonFilter}
                     style={buttonFilteredStyle} title={'Completed tasks'}
                     onClick={() => filteredTask(todoId, 'completed')}>Completed</Button>
