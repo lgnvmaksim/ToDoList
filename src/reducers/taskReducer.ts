@@ -2,7 +2,7 @@ import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../api";
 import {AddTodolistACType, GetTodolistACType} from "./todolistReducer";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
-import {handleServerNetworkError} from "../utils/errorUtils";
+import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
 
 export type TaskKeyType = {
     [key: string]: TaskMainType[]
@@ -13,34 +13,33 @@ const initialState: TaskKeyType = {}
 
 export const taskReducer = (state: TaskKeyType = initialState, action: ActionTaskType) => {
     switch (action.type) {
-        case "CHANGE-TASK-TITLE":{
+        case "CHANGE-TASK-TITLE":
             return {
                 ...state,
                 [action.todoId]: state[action.todoId].map(el => el.id === action.taskId ? {
                     ...el,
-                   title: action.newTitle
+                    title: action.newTitle
                 } : el)
             }
-        }
-        case "GET-TASKS-FOR-EMPTY-TODO": {
+
+        case "GET-TASKS-FOR-EMPTY-TODO":
             return {
                 ...state, [action.todoId]: action.tasks
             }
-        }
-        case "GET-TODOLIST": {
+
+        case "GET-TODOLIST":
             let copyState = {...state}
             action.todolist.forEach(el => {
-                    copyState[el.id] = []
-                }
-            )
+                copyState[el.id] = []
+            })
             return copyState
-        }
-        case "ADD-TODOLIST": {
+
+        case "ADD-TODOLIST":
             return {
                 ...state, [action.todolists.id]: []
             }
-        }
-        case "CHANGE-COMPLETED-TASK": {
+
+        case "CHANGE-COMPLETED-TASK":
             return {
                 ...state,
                 [action.todoId]: state[action.todoId].map(el => el.id === action.taskId ? {
@@ -48,15 +47,15 @@ export const taskReducer = (state: TaskKeyType = initialState, action: ActionTas
                     status: action.status
                 } : el)
             }
-        }
-        case "REMOVE-TASK": {
+
+        case "REMOVE-TASK":
             return {...state, [action.todoId]: state[action.todoId].filter(f => f.id !== action.taskId)}
-        }
-        case "ADD-TASK": {
+
+        case "ADD-TASK":
             return {
                 ...state, [action.todoId]: [action.newTask, ...state[action.todoId]]
             }
-        }
+
         default:
             return state
     }
@@ -68,6 +67,7 @@ export const addTaskAC = (todoId: string, newTask: TaskMainType) => ({
     type: 'ADD-TASK', todoId, newTask
 } as const)
 
+
 export const changeCompletedTaskAC = (todoId: string, taskId: string, status: TaskStatuses) => ({
     type: 'CHANGE-COMPLETED-TASK', todoId, taskId, status
 } as const)
@@ -77,8 +77,8 @@ const getTaskForEmptyTodoAC = (todoId: string, tasks: TaskMainType[]) => ({
 } as const)
 
 export const changeTaskTitleAC = (todoId: string, taskId: string, newTitle: string) => ({
-type: 'CHANGE-TASK-TITLE', todoId, taskId, newTitle
-}as const)
+    type: 'CHANGE-TASK-TITLE', todoId, taskId, newTitle
+} as const)
 
 
 //After the line there will be thunk-creators
@@ -102,14 +102,14 @@ export const createTaskTC = (todoId: string, title: string) =>
     (dispatch: Dispatch) => {
         taskApi.createTask(todoId, title)
             .then(res => dispatch(addTaskAC(todoId, res.data.data.item)))
-            .catch(e=>{
+            .catch(e => {
                 handleServerNetworkError(e, dispatch)
             })
     }
 
 export const changeCompletedTaskTC = (todoId: string, taskId: string, status: TaskStatuses) =>
     (dispatch: Dispatch, getState: () => AppRootStateType) => {
-        let tasks = getState().tasks[todoId].find(el=>el.id===taskId)
+        let tasks = getState().tasks[todoId].find(el => el.id === taskId)
         if (tasks) {
             let model: ModelType = {
                 title: tasks.title,
@@ -119,30 +119,39 @@ export const changeCompletedTaskTC = (todoId: string, taskId: string, status: Ta
                 priority: tasks.priority,
                 startDate: tasks.startDate,
                 deadline: tasks.deadline,
-                }
+            }
 
-        taskApi.updateTask(todoId, taskId, model)
-            .then(()=>dispatch(changeCompletedTaskAC(todoId, taskId, status)))
+            taskApi.updateTask(todoId, taskId, model)
+                .then(() => dispatch(changeCompletedTaskAC(todoId, taskId, status)))
         }
     }
-    
-    export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
-        (dispatch: Dispatch, getState: () => AppRootStateType) => {
-            let tasks = getState().tasks[todoId].find(el=>el.id===taskId)
-            if (tasks) {
-                let model: ModelType = {
-                    title: newTitle,
-                    description: tasks.description,
-                    completed: tasks.completed,
-                    status: tasks.status,
-                    priority: tasks.priority,
-                    startDate: tasks.startDate,
-                    deadline: tasks.deadline,
-                }
-                taskApi.updateTask(todoId, taskId, model)
-                    .then(()=>dispatch(changeTaskTitleAC(todoId, taskId, newTitle)))
+
+export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
+    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        let tasks = getState().tasks[todoId].find(el => el.id === taskId)
+        if (tasks) {
+            let model: ModelType = {
+                title: newTitle,
+                description: tasks.description,
+                completed: tasks.completed,
+                status: tasks.status,
+                priority: tasks.priority,
+                startDate: tasks.startDate,
+                deadline: tasks.deadline,
             }
-        
+            taskApi.updateTask(todoId, taskId, model)
+                .then((res) => {
+                    if (res.data.resultCode === 0) {
+                        dispatch(changeTaskTitleAC(todoId, taskId, newTitle))
+                    } else {
+                        handleServerAppError(res.data, dispatch)
+                    }
+                })
+                .catch(e => {
+                    handleServerNetworkError(e, dispatch)
+                })
+        }
+
     }
 
 //After the line there will be types of action-creators

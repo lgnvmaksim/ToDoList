@@ -87,7 +87,7 @@ export const todolistApi = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
     updateTodolist (todolistId: string, todolistTitle: string){
-        return instance.put<{title: string},AxiosResponse<TodolistMainType>>(`todo-lists/${todolistId}`, {title: todolistTitle})
+        return instance.put<{title: string},AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title: todolistTitle})
     }
 }
 

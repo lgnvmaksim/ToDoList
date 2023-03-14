@@ -41,11 +41,11 @@ export const Tasks = ({todoId, filter}: TaskType) => {
     }
 
 
-    return <ul style={{'paddingLeft': '15px'}}>
+    return <ul style={{paddingLeft: '15px'}}>
         {tasks.map(el =>
             (
-                <li key={el.id} style={{'listStyleType': 'none'}}>
-                    <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
+                <li key={el.id} style={{listStyleType: 'none'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
                         <div>
                             <Checkbox
                                 icon={<BookmarkBorderIcon/>}

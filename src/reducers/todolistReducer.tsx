@@ -1,7 +1,7 @@
 import {FilteredType, RequestStatusType, todolistApi, TodolistMainType} from "../api";
 import {Dispatch} from "redux";
 import {setErrorAC, setStatusAC, SetStatusACType} from "./appReducer";
-import {handleServerNetworkError} from "../utils/errorUtils";
+import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
 
 
 const initialState: TodolistMainType[] = []
@@ -11,7 +11,8 @@ export const todolistReducer = (state: TodolistMainType[] = initialState, action
         case "CHANGE-ENTITY-STATUS":
             return state.map(el=> el.id===action.todoId ? {...el, entityStatus: action.entity} :el)
 
-        case "REMOVE-ALL-TODOLISTS": return []
+        case "REMOVE-ALL-TODOLISTS":
+            return []
 
         case "CHANGE-TODOLIST-TITLE":
             return state.map(el => el.id === action.todoId ? {...el, title: action.newTitle} : el)
@@ -107,8 +108,15 @@ export const removeTodolistTC = (todoId: string) => (dispatch: Dispatch) => {
 export const changeTodolistTitleTC = (todoId: string, newTitle: string) =>
     (dispatch: Dispatch) => {
         todolistApi.updateTodolist(todoId, newTitle)
-            .then(() => {
-                dispatch(changeTodolistTitleAC(todoId, newTitle))
+            .then((res) => {
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTodolistTitleAC(todoId, newTitle))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            })
+            .catch(e=>{
+                handleServerNetworkError(e, dispatch)
             })
     }
 

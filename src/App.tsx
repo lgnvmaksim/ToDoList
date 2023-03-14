@@ -55,6 +55,7 @@ export const App = () => {
                 label={'Enter new todolist'}
                 variant={"outlined"}
                 buttonTitle={'Add todolist'}/>
+            <Button onClick={()=>{addTodolist('Test Todolist')}} variant={'text'}>Add test todolist</Button>
             <Button variant="outlined" startIcon={<DeleteIcon />} style={{color: '#a85304', borderColor: '#a85304'}} onClick={removeAllTodolists}>
                 Delete all
             </Button>

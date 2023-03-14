@@ -10,6 +10,7 @@ import {SuperTextField} from "../SuperTextField";
 import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolistReducer";
 import {Tasks} from "../Tasks";
 import {SuperFilteredButton} from "../SuperFilteredButton";
+import Button from "@mui/material/Button";
 
 
 type TodolistType = {
@@ -49,14 +50,17 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
 
 
     return <div className={s.todolist}>
-        <h3>
-            <SuperTextField title={title} newTitleCallback={(newText) => changeTodolistTitle(todoId, newText)}
-                            styleWidth={{width: '185px'}}/>
-            <IconButton aria-label="delete" title={'Remove todolist'}
-                        onClick={() => removeTodolist(todoId)} disabled={entityStatus==='loading'}>
-                <DeleteForeverIcon/>
-            </IconButton>
-        </h3>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <h3>
+                <SuperTextField title={title} newTitleCallback={(newText) => changeTodolistTitle(todoId, newText)}/>
+                <IconButton aria-label="delete" title={'Remove todolist'}
+                            onClick={() => removeTodolist(todoId)} disabled={entityStatus==='loading'}>
+                    <DeleteForeverIcon/>
+                </IconButton>
+            </h3>
+            <Button onClick={()=>addTask(todoId, 'Test Task')} color={'error'}>Add test task</Button>
+        </div>
+
         <AddItemForm addNewForm={(newTitle) => addTask(todoId, newTitle)}
                      label={'Enter your task'}
                      variant={"standard"}
