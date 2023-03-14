@@ -12,39 +12,48 @@ type AddItemFormType = {
     style?: {}
 }
 
+enum ErrorStatuses {
+    EmptyText = 1,
+    LongText = 2
+}
+
+
 export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: AddItemFormType) => {
 
     const [text, setText] = useState('')
-    const [error, setError] = useState<null | string>('')
+    const [error, setError] = useState<null | string | ErrorStatuses>('')
     const addTaskHandler = () => {
-        if (text.trim() !== '') {
+        if (text.trim() !== '' && text.length < 26) {
             addNewForm(text.trim())
             setText('')
+        } else if (text.trim() === '') {
+            setError(ErrorStatuses.EmptyText)
         } else {
-            setError(null)
+            setError(ErrorStatuses.LongText)
         }
     }
 
 
-
     return <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
-                <TextField
-                    error={error===null}
-                    style={style}
-                    label={error===null ? 'Please, enter correct value' : label} variant={variant} margin={'none'}
-                    autoComplete={'off'}
-                    value={text}
-                    onChange={(e) => {
-                        setText(e.currentTarget.value)
-                        setError('')
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            addTaskHandler()
-                        }
-                    }}/>
-                <IconButton title={buttonTitle} onClick={addTaskHandler}>
-                    <AddCircleIcon/>
-                </IconButton>
-        </div>
+        <TextField
+            error={error === ErrorStatuses.EmptyText || error === ErrorStatuses.LongText}
+            style={style}
+            label={error === ErrorStatuses.EmptyText ? 'Please, enter correct value' :
+                error === ErrorStatuses.LongText ? 'Maximum length 25 characters' : label} variant={variant}
+            margin={'none'}
+            autoComplete={'off'}
+            value={text}
+            onChange={(e) => {
+                setText(e.currentTarget.value)
+                setError('')
+            }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    addTaskHandler()
+                }
+            }}/>
+        <IconButton title={buttonTitle} onClick={addTaskHandler}>
+            <AddCircleIcon/>
+        </IconButton>
+    </div>
 };

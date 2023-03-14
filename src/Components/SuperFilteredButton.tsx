@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from "@mui/material/Button";
-import s from "./Todolist/Todolist.module.css";
 import {FilteredType} from "../api";
 
 type SuperButtonType = {
@@ -12,7 +11,7 @@ type SuperButtonType = {
 
 }
 
-export const SuperButton = ({todoId, onClick, name, title, color}: SuperButtonType) => {
+export const SuperFilteredButton = ({todoId, onClick, name, title, color}: SuperButtonType) => {
     const buttonFilteredStyle = {
         padding: '5px',
         margin: '5px',

@@ -10,7 +10,7 @@ import {createTaskTC, getTaskForEmptyTodoTC} from "../../reducers/taskReducer";
 import {SuperTextField} from "../SuperTextField";
 import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolistReducer";
 import {Tasks} from "../Tasks";
-import {SuperButton} from "../SuperButton";
+import {SuperFilteredButton} from "../SuperFilteredButton";
 
 
 type TodolistType = {
@@ -65,13 +65,13 @@ export const Todolist = ({title, todoId, filter}: TodolistType) => {
         <Tasks filter={filter} todoId={todoId}/>
 
         <div>
-            <SuperButton todoId={todoId} onClick={() => filteredTask(todoId, 'all')}
-                         name={'All'} color={filter==='all'? 'error' :'inherit'}
-                         title={'All tasks'}/>
-            <SuperButton todoId={todoId} onClick={() => filteredTask(todoId, 'active')} name={'Active'}
-                         title={'Active tasks'} color={filter==='active'? 'error' :'inherit'}/>
-            <SuperButton todoId={todoId} onClick={() => filteredTask(todoId, 'completed')} name={'Completed'}
-                         title={'Completed tasks'} color={filter==='completed'? 'error' :'inherit'}/>
+            <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'all')}
+                                 name={'All'} color={filter==='all'? 'error' :'inherit'}
+                                 title={'All tasks'}/>
+            <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'active')} name={'Active'}
+                                 title={'Active tasks'} color={filter==='active'? 'error' :'inherit'}/>
+            <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'completed')} name={'Completed'}
+                                 title={'Completed tasks'} color={filter==='completed'? 'error' :'inherit'}/>
 
         </div>
     </div>

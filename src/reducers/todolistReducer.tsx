@@ -1,13 +1,16 @@
 import {FilteredType, todolistApi, TodolistMainType} from "../api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store";
+
 
 const initialState: TodolistMainType[] = []
 
 export const todolistReducer = (state: TodolistMainType[] = initialState, action: ActionTodolistType) => {
     switch (action.type) {
-        case "CHANGE-TODOLIST-TITLE":{
-            return state.map(el=>el.id===action.todoId ? {...el, title: action.newTitle} : el)
+        case "REMOVE-ALL-TODOLISTS":{
+            return []
+        }
+        case "CHANGE-TODOLIST-TITLE": {
+            return state.map(el => el.id === action.todoId ? {...el, title: action.newTitle} : el)
         }
         case "GET-TODOLIST": {
             return action.todolist.map(el => ({...el, filter: 'all'}))
@@ -16,7 +19,6 @@ export const todolistReducer = (state: TodolistMainType[] = initialState, action
             return state.filter(f => f.id !== action.todoId)
         }
         case "ADD-TODOLIST": {
-            // let newTodo: TodolistMainType = {id: action.todoId, title: action.newTitle, filter: 'all'}
             let newTodolist: TodolistMainType = {...action.todolists, filter: 'all'}
             return [newTodolist, ...state]
         }
@@ -48,6 +50,10 @@ const changeTodolistTitleAC = (todoId: string, newTitle: string) => ({
     type: 'CHANGE-TODOLIST-TITLE', todoId, newTitle
 } as const)
 
+export const removeAllTodolistsAC = () => ({
+    type: 'REMOVE-ALL-TODOLISTS'
+} as const)
+
 
 //After the line there will be thunk-creators
 //_________________________________________________________________
@@ -73,10 +79,11 @@ export const removeTodolistTC = (todoId: string) => (dispatch: Dispatch) => {
 }
 
 export const changeTodolistTitleTC = (todoId: string, newTitle: string) =>
-    (dispatch: Dispatch, getState: ()=>AppRootStateType) => {
-    todolistApi.updateTodolist(todoId, newTitle)
-        .then(()=>dispatch(changeTodolistTitleAC(todoId, newTitle)))
-}
+    (dispatch: Dispatch) => {
+        todolistApi.updateTodolist(todoId, newTitle)
+            .then(() => dispatch(changeTodolistTitleAC(todoId, newTitle)))
+    }
+
 
 //After the line there will be types of action-creators
 //_________________________________________________________________
@@ -89,4 +96,5 @@ type ActionTodolistType =
     | ReturnType<typeof filteredTaskAC>
     | ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof changeTodolistTitleAC>
+    | ReturnType<typeof removeAllTodolistsAC>
 
