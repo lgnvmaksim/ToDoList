@@ -69,7 +69,8 @@ export const App = () => {
                         <Grid container spacing={3}>
                             {todolists.map(el => {
                                     return (
-                                        <Grid item>
+                                        <Grid item
+                                              key={el.id}>
                                             <Paper style={{
                                                 'padding': '5px',
                                                 'marginTop': '10px',

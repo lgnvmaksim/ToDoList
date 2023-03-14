@@ -86,7 +86,8 @@ export const addNewTodolistTC = (newTitle: string) =>
                 dispatch(setStatusAC('succeeded'))
             })
             .catch(e=> {
-                handleServerNetworkError(e, dispatch)
+                dispatch(setErrorAC('Maximum copies - 10'))
+                dispatch(setStatusAC('failed'))
             })
     }
 
