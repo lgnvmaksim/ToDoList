@@ -1,6 +1,5 @@
 import s from './Todolist.module.css'
-import {FilteredType} from "../../api";
-import Button from '@mui/material/Button';
+import {FilteredType, RequestStatusType} from "../../api";
 import IconButton from '@mui/material/IconButton'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {AddItemForm} from "../AddItemForm";
@@ -17,11 +16,12 @@ type TodolistType = {
     title: string
     todoId: string
     filter: FilteredType
+    entityStatus: RequestStatusType
 
 }
 
 
-export const Todolist = ({title, todoId, filter}: TodolistType) => {
+export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) => {
 
     const dispatch = useAppDispatch()
 
@@ -52,8 +52,8 @@ export const Todolist = ({title, todoId, filter}: TodolistType) => {
         <h3>
             <SuperTextField title={title} newTitleCallback={(newText) => changeTodolistTitle(todoId, newText)}
                             styleWidth={{width: '185px'}}/>
-            <IconButton aria-label="delete" title={'Remove todolist'} style={{color: '#8d650b'}}
-                        onClick={() => removeTodolist(todoId)}>
+            <IconButton aria-label="delete" title={'Remove todolist'}
+                        onClick={() => removeTodolist(todoId)} disabled={entityStatus==='loading'}>
                 <DeleteForeverIcon/>
             </IconButton>
         </h3>
@@ -72,7 +72,6 @@ export const Todolist = ({title, todoId, filter}: TodolistType) => {
                                  title={'Active tasks'} color={filter==='active'? 'error' :'inherit'}/>
             <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'completed')} name={'Completed'}
                                  title={'Completed tasks'} color={filter==='completed'? 'error' :'inherit'}/>
-
         </div>
     </div>
 }

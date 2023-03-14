@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 
+
 const instance = axios.create(
     {
         baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -11,6 +12,7 @@ const instance = axios.create(
 )
 
 export type FilteredType = 'all' | 'active' | 'completed'
+export type RequestStatusType = 'loading' | 'succeeded' | 'failed' | 'null'
 
 export type TodolistMainType={
     id: string,
@@ -18,11 +20,13 @@ export type TodolistMainType={
     addedDate:string
     order: number
     filter: FilteredType
+    entityStatus: RequestStatusType
 }
 
-type ResponseType<T={}>={
+export type ResponseType<T={}>={
     resultCode: number,
     messages: string[]
+    fieldsErrors: Array<string>
     data: T
 }
 

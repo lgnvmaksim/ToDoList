@@ -2,6 +2,7 @@ import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../api";
 import {AddTodolistACType, GetTodolistACType} from "./todolistReducer";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
+import {handleServerNetworkError} from "../utils/errorUtils";
 
 export type TaskKeyType = {
     [key: string]: TaskMainType[]
@@ -101,6 +102,9 @@ export const createTaskTC = (todoId: string, title: string) =>
     (dispatch: Dispatch) => {
         taskApi.createTask(todoId, title)
             .then(res => dispatch(addTaskAC(todoId, res.data.data.item)))
+            .catch(e=>{
+                handleServerNetworkError(e, dispatch)
+            })
     }
 
 export const changeCompletedTaskTC = (todoId: string, taskId: string, status: TaskStatuses) =>

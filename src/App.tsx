@@ -13,17 +13,19 @@ import {TodolistMainType} from "./api";
 import {AddItemForm} from "./Components/AddItemForm";
 import {useAppDispatch, useAppSelector} from "./store";
 import DeleteIcon from '@mui/icons-material/Delete';
+import LinearProgress from '@mui/material/LinearProgress';
+import {ErrorSnackbar} from "./Components/ErrorSnackbar";
 
 
 export const App = () => {
-
     const dispatch = useAppDispatch()
+    const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
+    const preloader = useAppSelector(state=>state.app.preloader)
 
     useEffect(() => {
         dispatch(getTodolistTC())
     }, [dispatch])
 
-    const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
 
 
     const addTodolist = (newTitle: string) => {
@@ -38,7 +40,6 @@ export const App = () => {
         <AppBar position="static" color={'transparent'} style={{'backgroundColor': '#e7c5a0'}}>
             <Toolbar>
                 <IconButton sx={{mr: 2}}>
-                    {/*<MenuIcon/>*/}
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     Todolist by Maxim Loginov
@@ -46,6 +47,7 @@ export const App = () => {
                 <Button color="inherit">Login</Button>
             </Toolbar>
         </AppBar>
+        {preloader==='loading' && <LinearProgress color="inherit"/>}
         <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
             <AddItemForm
                 style={{'margin': '7px'}}
@@ -53,7 +55,6 @@ export const App = () => {
                 label={'Enter new todolist'}
                 variant={"outlined"}
                 buttonTitle={'Add todolist'}/>
-
             <Button variant="outlined" startIcon={<DeleteIcon />} style={{color: '#a85304', borderColor: '#a85304'}} onClick={removeAllTodolists}>
                 Delete all
             </Button>
@@ -79,6 +80,7 @@ export const App = () => {
                                                     todoId={el.id}
                                                     title={el.title}
                                                     filter={el.filter}
+                                                    entityStatus={el.entityStatus}
                                                 />
                                             </Paper>
                                         </Grid>
@@ -90,6 +92,7 @@ export const App = () => {
                     </Container>
                 </div>
             </Paper>
+            <ErrorSnackbar/>
         </div>
 
     </div>
