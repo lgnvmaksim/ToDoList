@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import {styled} from "@mui/material";
 
 
 type AddItemFormType = {
@@ -37,6 +38,7 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: Ad
     return <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
         <TextField
             error={error === ErrorStatuses.EmptyText || error === ErrorStatuses.LongText}
+            // sx={texFieldStyle}
             style={style}
             label={error === ErrorStatuses.EmptyText ? 'Please, enter correct value' :
                 error === ErrorStatuses.LongText ? 'Maximum length 25 characters' : label} variant={variant}
@@ -57,3 +59,24 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: Ad
         </IconButton>
     </div>
 };
+
+
+const texFieldStyle={
+    '& label.Mui-focused': {
+        color: 'green',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: 'green',
+    },
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: 'red',
+        },
+        '&:hover fieldset': {
+            borderColor: 'yellow',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: 'green',
+        },
+}}
+

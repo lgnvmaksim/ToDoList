@@ -1,17 +1,19 @@
 import {FilteredType, RequestStatusType, todolistApi, TodolistMainType} from "../api";
-import {Dispatch} from "redux";
+import {AnyAction, Dispatch} from "redux";
 import {setErrorAC, setStatusAC, SetStatusACType} from "./appReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
+import {AppRootStateType} from "../store";
 
 
 const initialState: TodolistMainType[] = []
 
-export const todolistReducer = (state: TodolistMainType[] = initialState, action: ActionTodolistType) => {
+export const todolistReducer = (state = initialState, action: ActionTodolistType):  TodolistMainType[] => {
     switch (action.type) {
         case "CHANGE-ENTITY-STATUS":
             return state.map(el=> el.id===action.todoId ? {...el, entityStatus: action.entity} :el)
 
         case "REMOVE-ALL-TODOLISTS":
+            // return state.map(el=>el.id===action.todoId)
             return []
 
         case "CHANGE-TODOLIST-TITLE":
@@ -56,7 +58,7 @@ const changeTodolistTitleAC = (todoId: string, newTitle: string) => ({
 } as const)
 
 export const removeAllTodolistsAC = () => ({
-    type: 'REMOVE-ALL-TODOLISTS'
+    type: 'REMOVE-ALL-TODOLISTS',
 } as const)
 
 const changeEntityStatusAC = (todoId: string, entity: RequestStatusType) => ({
@@ -121,6 +123,16 @@ export const changeTodolistTitleTC = (todoId: string, newTitle: string) =>
             })
     }
 
+export const removeAllTodo = () => (dispatch: any,getState: ()=>AppRootStateType) => {
+    // const state = getState() as AppRootStateType;
+    const todos = getState().todolists
+
+    todos.forEach(todo => {
+        setTimeout(() => {
+            dispatch(removeTodolistTC(todo.id))
+        },200)
+    })
+}
 
 //After the line there will be types of action-creators
 //_________________________________________________________________

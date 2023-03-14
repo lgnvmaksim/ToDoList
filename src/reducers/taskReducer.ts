@@ -126,6 +126,8 @@ export const changeCompletedTaskTC = (todoId: string, taskId: string, status: Ta
         }
     }
 
+
+
 export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
     (dispatch: Dispatch, getState: () => AppRootStateType) => {
         let tasks = getState().tasks[todoId].find(el => el.id === taskId)
