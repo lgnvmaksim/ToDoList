@@ -5,11 +5,13 @@ import Paper from "@mui/material/Paper";
 import {useAppSelector} from "../../store";
 import {TodolistMainType} from "../../api";
 import {Todolist} from "./Todolist";
+import {HeadRemote} from "../HeadRemote";
 
 export const TodoMapping = () => {
     const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
 
     return <div>
+        <HeadRemote/>
         <Container>
             <Grid container spacing={3}>
                 {todolists.map(el => {
