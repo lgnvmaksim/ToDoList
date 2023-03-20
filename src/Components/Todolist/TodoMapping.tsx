@@ -1,14 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {useAppSelector} from "../../store";
+import {useAppDispatch, useAppSelector} from "../../store";
 import {TodolistMainType} from "../../api";
 import {Todolist} from "./Todolist";
 import {HeadRemote} from "../HeadRemote";
+import {getTodolistTC} from "../../reducers/todolistReducer";
+import {Navigate} from "react-router-dom";
 
 export const TodoMapping = () => {
     const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
+    useEffect(() => {
+        if (isLoggedIn){
+            dispatch(getTodolistTC())
+        }
+    }, [])
+
+    console.log(isLoggedIn)
+
+    if (!isLoggedIn) {
+        return  <Navigate to={'login'}/>
+    }
 
     return <div>
         <HeadRemote/>

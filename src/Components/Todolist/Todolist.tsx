@@ -4,13 +4,14 @@ import IconButton from '@mui/material/IconButton'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {AddItemForm} from "../AddItemForm";
 import React, {useEffect} from "react";
-import {useAppDispatch} from "../../store";
+import {useAppDispatch, useAppSelector} from "../../store";
 import {createTaskTC, getTaskForEmptyTodoTC} from "../../reducers/taskReducer";
 import {SuperTextField} from "../SuperTextField";
 import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolistReducer";
 import {Tasks} from "../Tasks";
 import {SuperFilteredButton} from "../SuperFilteredButton";
 import Button from "@mui/material/Button";
+import {Navigate} from "react-router-dom";
 
 
 type TodolistType = {
@@ -23,8 +24,9 @@ type TodolistType = {
 
 
 export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) => {
-
     const dispatch = useAppDispatch()
+
+
 
     useEffect(() => {
         dispatch(getTaskForEmptyTodoTC(todoId))
@@ -47,6 +49,7 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
     const changeTodolistTitle = (todoId: string, newTitle: string) => {
         dispatch(changeTodolistTitleTC(todoId, newTitle))
     }
+
 
 
     return <div className={s.todolist}>

@@ -9,15 +9,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
-
-// type FormikErrorType = {
-//     email?: string
-//     password?: string
-//     rememberMe?: boolean
-// }
+import {useAppDispatch, useAppSelector} from "../store";
+import {loginTC} from "../reducers/authReducer";
+import {Navigate} from "react-router-dom";
 
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const formik = useFormik({
         initialValues: {
@@ -33,15 +32,20 @@ export const Login = () => {
                 .required('Required'),
         }),
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            dispatch(loginTC(values))
             formik.resetForm()
         },
     });
+    console.log(isLoggedIn)
+
+    if (isLoggedIn) {
+        return  <Navigate to={'/'}/>
+    }
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <FormControl>
-                <FormLabel>
+                <FormLabel style={{color: 'black'}}>
                     <p>To log in get registered
                         <a href={'https://social-network.samuraijs.com/'}
                            target={'_blank'}> here

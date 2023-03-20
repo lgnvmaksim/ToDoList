@@ -75,6 +75,30 @@ export type ModelType={
     deadline: string
 }
 
+export type AuthType={
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
+
+type UserId ={
+    userId: string
+}
+
+
+
+export const authApi ={
+    login(data: AuthType){
+        return instance.post<ResponseType<UserId>>('auth/login', data)
+    },
+    logout(){
+        return instance.delete<ResponseType>('auth/login')
+    },
+    me(){
+        return instance.get<ResponseType<AuthType & UserId>>('auth/me')
+    }
+}
 
 export const todolistApi = {
     getTodolist() {
