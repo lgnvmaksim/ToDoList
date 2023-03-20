@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import {useAppDispatch, useAppSelector} from "../store";
 import {loginTC} from "../reducers/authReducer";
 import {Navigate} from "react-router-dom";
+import Paper from "@mui/material/Paper";
 
 
 export const Login = () => {
@@ -36,7 +37,7 @@ export const Login = () => {
             formik.resetForm()
         },
     });
-    console.log(isLoggedIn)
+
 
     if (isLoggedIn) {
         return  <Navigate to={'/'}/>
@@ -44,6 +45,7 @@ export const Login = () => {
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
+        <Paper style={{padding: '50px', marginTop: '50px', borderRadius: '10px', backgroundColor: '#f1eaea'}}>
             <FormControl>
                 <FormLabel style={{color: 'black'}}>
                     <p>To log in get registered
@@ -58,10 +60,12 @@ export const Login = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <FormGroup>
 
-                        <TextField label="Email"
-                                   margin="normal"
-                                   type="email"
-                                   {...formik.getFieldProps('email')}
+                        <TextField
+                            label="Email"
+                            margin="normal"
+                            type="email"
+
+                            {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email &&
                             <div style={{color: "red"}}>{formik.errors.email}</div>}
@@ -85,6 +89,7 @@ export const Login = () => {
                     </FormGroup>
                 </form>
             </FormControl>
+        </Paper>
         </Grid>
     </Grid>
 }

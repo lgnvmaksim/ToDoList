@@ -6,7 +6,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "./Components/Login";
 import {useAppDispatch, useAppSelector} from "./store";
 import {meTC} from "./reducers/authReducer";
-import CircularProgress from "@mui/material/CircularProgress";
+import {Preloader} from "./utils/Preloader";
 
 
 export const App = () => {
@@ -20,14 +20,14 @@ export const App = () => {
     console.log(isInitialized)
 
     if (!isInitialized) {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress/>
+        return <div>
+            <Preloader/>
         </div>
+
     }
 
 
-    return <div style={{minHeight: '100vh', height: '100%', 'backgroundColor': 'rgba(133,115,155,0.74)'}}>
+    return <div style={{minHeight: '100vh', height: '100%', 'backgroundColor': '#303030'}}>
         <Header/>
         <ErrorSnackbar/>
 

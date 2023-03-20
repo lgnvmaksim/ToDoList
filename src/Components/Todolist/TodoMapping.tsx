@@ -15,15 +15,14 @@ export const TodoMapping = () => {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn) {
             dispatch(getTodolistTC())
         }
     }, [])
 
-    console.log(isLoggedIn)
 
     if (!isLoggedIn) {
-        return  <Navigate to={'login'}/>
+        return <Navigate to={'login'}/>
     }
 
     return <div>
@@ -35,10 +34,10 @@ export const TodoMapping = () => {
                             <Grid item
                                   key={el.id}>
                                 <Paper style={{
-                                    'padding': '5px',
-                                    'marginTop': '10px',
-                                    'borderRadius': '10px',
-                                    'backgroundColor': '#85739B'
+                                    padding: '5px',
+                                    marginTop: '10px',
+                                    borderRadius: '10px',
+                                    backgroundColor: '#85739B'
                                 }} elevation={16}>
                                     <Todolist
                                         key={el.id}
