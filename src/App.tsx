@@ -17,7 +17,6 @@ export const App = () => {
         dispatch(meTC())
     }, [])
 
-    console.log(isInitialized)
 
     if (!isInitialized) {
         return <div>

@@ -38,6 +38,10 @@ export const Login = () => {
         },
     });
 
+    const emailErrors = formik.touched.email && formik.errors.email
+    const passwordErrors = formik.touched.password && formik.errors.password
+
+
 
     if (isLoggedIn) {
         return  <Navigate to={'/'}/>
@@ -61,22 +65,20 @@ export const Login = () => {
                     <FormGroup>
 
                         <TextField
-                            label="Email"
+                            label={emailErrors ? formik.errors.email : 'Email'}
                             margin="normal"
                             type="email"
-
+                            autoFocus
+                            error={!!emailErrors}
                             {...formik.getFieldProps('email')}
                         />
-                        {formik.touched.email && formik.errors.email &&
-                            <div style={{color: "red"}}>{formik.errors.email}</div>}
 
                         <TextField type="password"
-                                   label="Password"
+                                   label={passwordErrors ? formik.errors.password : 'Password'}
                                    margin="normal"
+                                   error={!!passwordErrors}
                                    {...formik.getFieldProps('password')}
                         />
-                        {formik.touched.password && formik.errors.password &&
-                            <div style={{color: "red"}}>{formik.errors.password}</div>}
 
                         <FormControlLabel label={'Remember me'}
                                           control={<Checkbox
