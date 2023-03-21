@@ -25,8 +25,6 @@ type TodolistType = {
 export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) => {
     const dispatch = useAppDispatch()
 
-
-
     useEffect(() => {
         dispatch(getTaskForEmptyTodoTC(todoId))
     }, [dispatch, todoId])
