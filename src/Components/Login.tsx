@@ -64,17 +64,15 @@ export const Login = () => {
                         <FormGroup>
 
                             <TextField
-                                defaultValue="free@samuraijs.com"
                                 label={emailErrors ? formik.errors.email : 'Email'}
                                 margin="normal"
                                 type="email"
-                                autoFocus
+                                // autoFocus
                                 error={!!emailErrors}
                                 {...formik.getFieldProps('email')}
                             />
 
                             <TextField
-                                defaultValue="free"
                                 type="password"
                                 label={passwordErrors ? formik.errors.password : 'Password'}
                                 margin="normal"
