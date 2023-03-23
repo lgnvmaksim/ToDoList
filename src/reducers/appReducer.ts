@@ -9,7 +9,7 @@ const initialState = {
 
 const slice= createSlice({
     name: 'app',
-    initialState: initialState,
+    initialState,
     reducers: {
         setStatusAC(state, action: PayloadAction<RequestStatusType>){
             state.preloader = action.payload

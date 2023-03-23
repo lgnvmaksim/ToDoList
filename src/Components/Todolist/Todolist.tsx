@@ -31,7 +31,7 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
 
 
     const filteredTask = (todoId: string, filter: FilteredType) => {
-        dispatch(filteredTaskAC(todoId, filter))
+        dispatch(filteredTaskAC({todoId, filter}))
     }
 
     const addTask = (todoId: string, newTitle: string) => {

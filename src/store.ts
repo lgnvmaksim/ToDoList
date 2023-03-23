@@ -31,7 +31,7 @@ export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>
 export const useAppDispatch = () => useDispatch<AppThunkDispatch>()
 export const useAppSelector : TypedUseSelectorHook<AppRootStateType> = useSelector
 
-export type AppDispatch=typeof store.dispatch
+// export type AppDispatch=typeof store.dispatch
 // @ts-ignore
 window.store = store
 
