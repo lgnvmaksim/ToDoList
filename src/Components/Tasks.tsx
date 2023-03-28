@@ -60,7 +60,7 @@ export const Tasks = ({todoId, filter}: TaskType) => {
                         <div>
                             <IconButton aria-label="delete"
                                         title={'Remove task'}
-                                        style={{color: '#8d650b'}}
+                                        style={{color: 'rgb(170,0,255)'}}
                                         size={'small'}
                                         onClick={() => removeTask(todoId, el.id)}>
                                 <DeleteIcon/>

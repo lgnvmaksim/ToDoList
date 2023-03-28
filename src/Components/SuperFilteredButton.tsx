@@ -17,7 +17,7 @@ export const SuperFilteredButton = ({todoId, onClick, name, title, color}: Super
         margin: '5px',
         fontSize: '0.805rem',
         minWidth: '50px',
-        color: '#5b3f01'
+        color: '#000000'
     }
 
     return <Button variant="contained" color={color}

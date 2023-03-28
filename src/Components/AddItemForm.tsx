@@ -10,6 +10,7 @@ type AddItemFormType = {
     variant: undefined | "standard" | "filled" | "outlined"
     buttonTitle: string
     style?: {}
+    sx?:{}
 }
 
 enum ErrorStatuses {
@@ -18,7 +19,7 @@ enum ErrorStatuses {
 }
 
 
-export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: AddItemFormType) => {
+export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style,sx}: AddItemFormType) => {
 
     const [text, setText] = useState('')
     const [error, setError] = useState<null | string | ErrorStatuses>('')
@@ -37,7 +38,7 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: Ad
     return <div style={{'display': "flex", 'alignItems': 'flex-end'}}>
         <TextField
             error={error === ErrorStatuses.EmptyText || error === ErrorStatuses.LongText}
-            // sx={texFieldStyle}
+            sx={sx}
             style={style}
             label={error === ErrorStatuses.EmptyText ? 'Please, enter correct value' :
                 error === ErrorStatuses.LongText ? 'Maximum length 25 characters' : label} variant={variant}
@@ -53,7 +54,7 @@ export const AddItemForm = ({addNewForm, label, variant, buttonTitle, style}: Ad
                     addTaskHandler()
                 }
             }}/>
-        <IconButton title={buttonTitle} onClick={addTaskHandler}>
+        <IconButton title={buttonTitle} onClick={addTaskHandler} style={style}>
             <AddCircleIcon/>
         </IconButton>
     </div>

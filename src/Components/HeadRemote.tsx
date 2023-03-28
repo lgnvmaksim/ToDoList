@@ -24,16 +24,41 @@ export const HeadRemote = () => {
     return (
         <div>
             {preloader==='loading' && <LinearProgress color="inherit"/>}
-            <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+            <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap:'wrap'}}>
                 <AddItemForm
-                    style={{'margin': '7px'}}
+                    style={{margin: '7px', color: 'white'}}
+                    sx={{
+                        '& label': {
+                            color: 'white',
+                        },
+                        '& label.Mui-focused': {
+                            color: 'white',
+                        },
+                        '& .MuiInput-underline:after': {
+                            borderBottomColor: 'white',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: 'white',
+                                color: 'white',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: 'white',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: 'white',
+                                color: 'white',
+                            },
+                            '&.Mui-focused ': {
+                                color: 'white',
+                            }}}}
                     addNewForm={addTodolist}
                     label={'Enter new todolist'}
                     variant={"outlined"}
                     buttonTitle={'Add todolist'}
                 />
-                <Button onClick={()=>{addTodolist('Test Todolist')}} variant={'text'}>Click to add test todolist</Button>
-                <Button variant="outlined" startIcon={<DeleteIcon />} style={{color: '#a85304', borderColor: '#a85304'}} onClick={removeAllTodolists}>
+                <Button style={{color: 'white', borderColor:'white', margin: '5px'}} onClick={()=>{addTodolist('Test Todolist')}} variant={'outlined'}>Click to add test todolist</Button>
+                <Button  variant="outlined" startIcon={<DeleteIcon />} style={{color: 'white', borderColor:'white', margin: '5px', minWidth:'100px'}} onClick={removeAllTodolists}>
                     Delete all
                 </Button>
             </div>

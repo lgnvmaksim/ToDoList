@@ -37,7 +37,7 @@ export const TodoMapping = () => {
                                     padding: '5px',
                                     marginTop: '10px',
                                     borderRadius: '10px',
-                                    backgroundColor: '#85739B'
+                                    backgroundColor: 'rgba(187,183,239,0.59)'
                                 }} elevation={16}>
                                     <Todolist
                                         key={el.id}

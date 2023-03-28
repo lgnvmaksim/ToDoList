@@ -85,7 +85,7 @@ export const Login = () => {
                                                   checked={formik.values.rememberMe}
                                                   {...formik.getFieldProps('rememberMe')}
                                               />}/>
-                            <Button type={'submit'} variant={'contained'} color={'primary'}>
+                            <Button type={'submit'} variant={'contained'} style={{backgroundColor: 'rgba(187,183,239,0.59)', color: 'black'}}>
                                 Login
                             </Button>
                         </FormGroup>

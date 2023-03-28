@@ -1,7 +1,6 @@
 import React from 'react';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {logoutTC} from "../reducers/authReducer";
@@ -11,14 +10,12 @@ export const Header = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
-    return   <AppBar position="static" color={'transparent'} style={{'backgroundColor': '#D0B3A3'}}>
+    return   <AppBar position="static" color={'transparent'} style={{'backgroundColor': 'rgba(187,183,239,0.59)'}}>
         <Toolbar>
-            <IconButton sx={{mr: 2}}>
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+            <Typography variant="h6" component="div" sx={{flexGrow: 1, color: 'white'}}>
                 Todolist by Maxim Loginov
             </Typography>
-            {isLoggedIn && <Button color="inherit" onClick={() => dispatch(logoutTC())}>Logout</Button>}
+            {isLoggedIn && <Button  variant={'outlined'} style={{color: 'white', borderColor:'white'}} onClick={() => dispatch(logoutTC())}>Logout</Button>}
         </Toolbar>
     </AppBar>
 };

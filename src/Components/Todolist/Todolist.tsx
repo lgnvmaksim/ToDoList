@@ -58,24 +58,55 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
                     <DeleteForeverIcon/>
                 </IconButton>
             </h3>
-            <Button onClick={()=>addTask(todoId, 'Test Task')} color={'error'}>Add test task</Button>
+            <Button onClick={()=>addTask(todoId, 'Test Task')} variant={'contained'} style={{color: 'black'}}
+                    sx={{
+                        backgroundColor: '#E0E0E0',
+                        '&:hover': {
+                            backgroundColor: 'rgb(170,0,255)'
+                        }}}>Add test task</Button>
         </div>
 
         <AddItemForm addNewForm={(newTitle) => addTask(todoId, newTitle)}
                      label={'Enter your task'}
                      variant={"standard"}
-                     buttonTitle={'Add task'}/>
+                     buttonTitle={'Add task'}
+                     sx={{
+                         '& label': {
+                             color: 'black',
+                         },
+                         '& label.Mui-focused': {
+                             color: 'black',
+                         },
+                         '& .MuiInput-underline:after': {
+                             borderBottomColor: 'black',
+                         },
+                         '& .MuiOutlinedInput-root': {
+                             '& fieldset': {
+                                 borderColor: 'black',
+                                 color: 'black',
+                             },
+                             '&:hover fieldset': {
+                                 borderColor: 'black',
+                             },
+                             '&.Mui-focused fieldset': {
+                                 borderColor: 'black',
+                                 color: 'black',
+                             },
+                             '&.Mui-focused ': {
+                                 color: 'black',
+                             }}}}/>
+
 
         <Tasks filter={filter} todoId={todoId}/>
 
         <div>
             <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'all')}
-                                 name={'All'} color={filter==='all'? 'error' :'inherit'}
+                                 name={'All'} color={filter==='all'? 'secondary' :'inherit'}
                                  title={'All tasks'}/>
             <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'active')} name={'Active'}
-                                 title={'Active tasks'} color={filter==='active'? 'error' :'inherit'}/>
+                                 title={'Active tasks'} color={filter==='active'? 'secondary' :'inherit'}/>
             <SuperFilteredButton todoId={todoId} onClick={() => filteredTask(todoId, 'completed')} name={'Completed'}
-                                 title={'Completed tasks'} color={filter==='completed'? 'error' :'inherit'}/>
+                                 title={'Completed tasks'} color={filter==='completed'? 'secondary' :'inherit'}/>
         </div>
     </div>
 }
