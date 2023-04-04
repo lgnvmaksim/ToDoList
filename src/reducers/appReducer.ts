@@ -7,24 +7,20 @@ const initialState = {
     error: null as null | string
 }
 
-const slice= createSlice({
+const slice = createSlice({
     name: 'app',
     initialState,
     reducers: {
-        setStatusAC(state, action: PayloadAction<RequestStatusType>){
+        setStatusAC: (state, action: PayloadAction<RequestStatusType>) => {
             state.preloader = action.payload
         },
-        setErrorAC (state, action: PayloadAction<null | string>){
+        setErrorAC: (state, action: PayloadAction<null | string>) => {
             state.error = action.payload
 
         }
     }
 })
+1 24
 
-export const appReducer =  slice.reducer
+export const appReducer = slice.reducer
 export const {setStatusAC, setErrorAC} = slice.actions
-
-
-export type SetStatusACType = ReturnType<typeof setStatusAC>
-export type SetErrorACType = ReturnType<typeof setErrorAC>
-

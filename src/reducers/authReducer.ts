@@ -5,15 +5,13 @@ import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtil
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
-const initialState = {
-    isLoggedIn: false,
-    isInitialized: false
-}
-
 
 const slice= createSlice({
     name: 'auth',
-    initialState: initialState,
+    initialState:{
+        isLoggedIn: false,
+        isInitialized: false
+    },
     reducers: {
         setIsLoggedInAC(state,  action: PayloadAction<boolean>){
            state.isLoggedIn = action.payload
