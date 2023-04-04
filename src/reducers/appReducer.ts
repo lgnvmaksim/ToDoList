@@ -20,7 +20,7 @@ const slice = createSlice({
         }
     }
 })
-1 24
+
 
 export const appReducer = slice.reducer
 export const {setStatusAC, setErrorAC} = slice.actions
