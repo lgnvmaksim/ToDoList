@@ -1,5 +1,5 @@
-import {ModelType, taskApi, TaskMainType, TaskStatuses, TodolistMainType} from "../api";
-import {addTodolistAC, AddTodolistACType, getTodolistAC, GetTodolistACType, removeTodolistAC} from "./todolistReducer";
+import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../api";
+import {addTodolistAC, getTodolistAC, removeTodolistAC} from "./todolistReducer";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
@@ -40,18 +40,19 @@ const slice = createSlice({
             tasks[index].title = action.payload.newTitle
         }
     },
-    extraReducers:(builder)=> {
-        builder.addCase(addTodolistAC, (state, action)=>{
-            state[action.payload.id] = []
-        });
-        builder.addCase(removeTodolistAC, (state, action)=>{
-            delete state[action.payload.todoId]
-        });
-        builder.addCase(getTodolistAC, (state, action)=>{
-            action.payload.forEach((tl: any)=>{
-                state[tl.id] = []
+    extraReducers: builder => {
+        builder
+            .addCase(addTodolistAC, (state, action) => {
+                state[action.payload.id] = []
             })
-        });
+            .addCase(removeTodolistAC, (state, action) => {
+                delete state[action.payload.todoId]
+            })
+            .addCase(getTodolistAC, (state, action) => {
+                action.payload.forEach((tl: any) => {
+                    state[tl.id] = []
+                })
+            });
     }
 })
 
@@ -64,7 +65,7 @@ export const getTaskForEmptyTodoTC = (todoId: string) =>
     (dispatch: Dispatch) => {
         taskApi.getTasks(todoId)
             .then(res => (
-                dispatch(getTaskForEmptyTodoAC({todoId, tasks:res.data.items}))
+                dispatch(getTaskForEmptyTodoAC({todoId, tasks: res.data.items}))
             ))
     }
 
@@ -77,7 +78,7 @@ export const removeTaskTC = (todoId: string, taskId: string) =>
 export const createTaskTC = (todoId: string, title: string) =>
     (dispatch: Dispatch) => {
         taskApi.createTask(todoId, title)
-            .then(res => dispatch(addTaskAC({todoId,newTask: res.data.data.item})))
+            .then(res => dispatch(addTaskAC({todoId, newTask: res.data.data.item})))
             .catch(e => {
                 handleServerNetworkError(e, dispatch)
             })

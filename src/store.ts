@@ -3,7 +3,7 @@ import {taskReducer} from "./reducers/taskReducer";
 import {ThunkDispatch} from "redux-thunk";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {todolistReducer} from "./reducers/todolistReducer";
-import {appReducer} from "./reducers/appReducer";
+import {appReducer} from "./reducers/appReducer/appReducer";
 import {authReducer} from "./reducers/authReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import thunkMiddleware from 'redux-thunk'

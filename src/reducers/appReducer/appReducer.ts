@@ -1,4 +1,4 @@
-import {RequestStatusType} from "../api";
+import {RequestStatusType} from "../../api";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 

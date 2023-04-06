@@ -1,6 +1,6 @@
 import {FilteredType, RequestStatusType, todolistApi, TodolistMainType} from "../api";
 import {Dispatch} from "redux";
-import {setErrorAC, setStatusAC} from "./appReducer";
+import {setErrorAC, setStatusAC} from "./appReducer/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
 import {AppRootStateType} from "../store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
