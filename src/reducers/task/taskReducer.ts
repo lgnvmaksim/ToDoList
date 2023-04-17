@@ -1,8 +1,8 @@
-import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../api";
-import {addTodolistAC, getTodolistAC, removeTodolistAC} from "./todolistReducer";
+import {ModelType, taskApi, TaskMainType, TaskStatuses} from "../../api";
+import {addTodolistAC, getTodolistAC, removeTodolistAC} from "../todolist/todolistReducer";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store";
-import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
+import {AppRootStateType} from "../../store";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type TaskKeyType = {

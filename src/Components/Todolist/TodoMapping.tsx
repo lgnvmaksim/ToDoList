@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../store";
 import {TodolistMainType} from "../../api";
 import {Todolist} from "./Todolist";
 import {HeadRemote} from "../HeadRemote";
-import {getTodolistTC} from "../../reducers/todolistReducer";
+import {getTodolistTC} from "../../reducers/todolist/todolistReducer";
 import {Navigate} from "react-router-dom";
 
 export const TodoMapping = () => {

@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
-import {setStatusAC} from "./appReducer/appReducer";
-import {authApi, AuthType} from "../api";
-import {handleServerAppError, handleServerNetworkError} from "../utils/errorUtils";
+import {setStatusAC} from "../app/appReducer";
+import {authApi, AuthType} from "../../api";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 

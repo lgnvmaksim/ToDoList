@@ -4,7 +4,7 @@ import {AddItemForm} from "./AddItemForm";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useAppDispatch, useAppSelector} from "../store";
-import {addNewTodolistTC, removeAllTodo, removeAllTodolistsAC} from "../reducers/todolistReducer";
+import {addNewTodolistTC, removeAllTodo, removeAllTodolistsAC} from "../reducers/todolist/todolistReducer";
 
 
 

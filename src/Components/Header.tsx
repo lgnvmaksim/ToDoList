@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {logoutTC} from "../reducers/authReducer";
+import {logoutTC} from "../reducers/auth/authReducer";
 import {useAppDispatch, useAppSelector} from "../store";
 
 export const Header = () => {

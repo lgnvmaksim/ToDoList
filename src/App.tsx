@@ -5,14 +5,15 @@ import {Header} from "./Components/Header";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "./Components/Login";
 import {useAppDispatch, useAppSelector} from "./store";
-import {meTC} from "./reducers/authReducer";
+import {meTC} from "./reducers/auth/authReducer";
 import {Preloader} from "./utils/Preloader";
 import Container from "@mui/material/Container";
+import {selectAuth} from "./reducers/auth/authSelector";
 
 
 export const App = () => {
     const dispatch = useAppDispatch()
-    const isInitialized = useAppSelector(state => state.auth.isInitialized)
+    const isInitialized = useAppSelector(selectAuth)
 
     useEffect(() => {
         dispatch(meTC())
