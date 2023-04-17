@@ -91,6 +91,11 @@ export type AddTaskArgType ={
     title: string
 }
 
+export type ChangeCompletedTask ={
+    todoId: string, taskId: string, status: TaskStatuses
+}
+
+
 
 
 export const authApi ={

@@ -34,7 +34,7 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
         dispatch(filteredTaskAC({todoId, filter}))
     }
 
-    const addTask = (todoId: string, newTitle: string) => {
+    const addTask = (todoId: string, title: string) => {
         dispatch(tasksThunks.createTask({title, todoId}))
     }
 
