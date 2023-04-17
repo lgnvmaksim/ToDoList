@@ -5,7 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {AddItemForm} from "../AddItemForm";
 import React, {useEffect} from "react";
 import {useAppDispatch} from "../../store";
-import {createTaskTC, getTaskForEmptyTodoTC} from "../../reducers/task/taskReducer";
+import {tasksThunks} from "../../reducers/task/taskReducer";
 import {SuperTextField} from "../SuperTextField";
 import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolist/todolistReducer";
 import {Tasks} from "../Tasks";
@@ -26,7 +26,7 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(getTaskForEmptyTodoTC(todoId))
+        dispatch(tasksThunks.getTaskForEmptyTodo(todoId))
     }, [dispatch, todoId])
 
 
@@ -35,7 +35,7 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
     }
 
     const addTask = (todoId: string, newTitle: string) => {
-        dispatch(createTaskTC(todoId, newTitle))
+        dispatch(tasksThunks.createTask({title, todoId}))
     }
 
 

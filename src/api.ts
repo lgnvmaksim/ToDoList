@@ -86,6 +86,11 @@ type UserId ={
     userId: string
 }
 
+export type AddTaskArgType ={
+    todoId: string
+    title: string
+}
+
 
 
 export const authApi ={
@@ -119,8 +124,8 @@ export const taskApi ={
     getTasks (todolistId: string){
         return instance.get<TaskItemsType>(`todo-lists/${todolistId}/tasks`)
     },
-    createTask (todolistId: string, taskTitle: string){
-        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TaskMainType}>>>(`todo-lists/${todolistId}/tasks`, {title: taskTitle})
+    createTask (arg:AddTaskArgType){
+        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TaskMainType}>>>(`todo-lists/${arg.todoId}/tasks`, {title: arg.title})
     },
     deleteTask (todolistId: string, taskId: string){
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
