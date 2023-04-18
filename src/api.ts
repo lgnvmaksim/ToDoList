@@ -90,6 +90,10 @@ export type AddTaskArgType ={
     todoId: string
     title: string
 }
+export type RemoveTaskArgType ={
+    todoId: string
+    taskId: string
+}
 
 export type ChangeCompletedTask ={
     todoId: string,
@@ -134,8 +138,8 @@ export const taskApi ={
     createTask (arg:AddTaskArgType){
         return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TaskMainType}>>>(`todo-lists/${arg.todoId}/tasks`, {title: arg.title})
     },
-    deleteTask (todolistId: string, taskId: string){
-        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    deleteTask (arg: RemoveTaskArgType){
+        return instance.delete<ResponseType>(`todo-lists/${arg.todoId}/tasks/${arg.taskId}`)
     },
     updateTask (todolistId: string, taskId: string, model: ModelType){
         return instance.put<ModelType, AxiosResponse<ResponseType<{item: TaskMainType}>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
