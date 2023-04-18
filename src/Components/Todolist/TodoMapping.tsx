@@ -6,8 +6,8 @@ import {useAppDispatch, useAppSelector} from "../../store";
 import {TodolistMainType} from "../../api";
 import {Todolist} from "./Todolist";
 import {HeadRemote} from "../HeadRemote";
-import {getTodolistTC} from "../../reducers/todolist/todolistReducer";
 import {Navigate} from "react-router-dom";
+import {todolistThunks} from "../../reducers/todolist/todolistReducer";
 
 export const TodoMapping = () => {
     const todolists = useAppSelector<TodolistMainType[]>(state => state.todolists)
@@ -16,7 +16,7 @@ export const TodoMapping = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            dispatch(getTodolistTC())
+            dispatch(todolistThunks.getTodolist())
         }
     }, [])
 

@@ -90,6 +90,9 @@ export type AddTaskArgType ={
     todoId: string
     title: string
 }
+
+export type ChangeTodoTitle = AddTaskArgType
+
 export type RemoveTaskArgType ={
     todoId: string
     taskId: string
@@ -126,8 +129,8 @@ export const todolistApi = {
     deleteTodolist (todolistId: string){
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
-    updateTodolist (todolistId: string, todolistTitle: string){
-        return instance.put<{title: string},AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title: todolistTitle})
+    updateTodolist (arg: ChangeTodoTitle){
+        return instance.put<{title: string},AxiosResponse<ResponseType>>(`todo-lists/${arg.todoId}`, {title: arg.title})
     }
 }
 

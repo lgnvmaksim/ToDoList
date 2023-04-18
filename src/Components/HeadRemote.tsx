@@ -4,7 +4,7 @@ import {AddItemForm} from "./AddItemForm";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useAppDispatch, useAppSelector} from "../store";
-import {addNewTodolistTC, removeAllTodo, removeAllTodolistsAC} from "../reducers/todolist/todolistReducer";
+import {removeAllTodo, todolistThunks} from "../reducers/todolist/todolistReducer";
 
 
 
@@ -13,7 +13,7 @@ export const HeadRemote = () => {
 
 
     const addTodolist = (newTitle: string) => {
-        dispatch(addNewTodolistTC(newTitle))
+        dispatch(todolistThunks.addNewTodolist(newTitle))
     }
 
     const removeAllTodolists = () => {

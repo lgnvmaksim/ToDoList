@@ -1,5 +1,5 @@
 import {AddTaskArgType, ChangeCompletedTask, ModelType, RemoveTaskArgType, taskApi, TaskMainType} from "../../api";
-import {addTodolistAC, getTodolistAC, removeTodolistAC} from "../todolist/todolistReducer";
+import {todolistThunks} from "../todolist/todolistReducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 import {createSlice} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../utils/create-app-async-thunk";
@@ -26,7 +26,6 @@ const createTask = createAppAsyncThunk<{ newTask: TaskMainType }, AddTaskArgType
     try {
         dispatch(setStatusAC('loading'))
         const res = await taskApi.createTask(arg)
-        console.log(res)
         if (res.data.resultCode === 0) {
             return {newTask: res.data.data.item}
         } else {
@@ -123,13 +122,13 @@ const slice = createSlice({
             .addCase(getTaskForEmptyTodo.fulfilled, (state, action) => {
                 state[action.payload.todoId] = action.payload.tasks
             })
-            .addCase(addTodolistAC, (state, action) => {
+            .addCase(todolistThunks.addNewTodolist.fulfilled, (state, action) => {
                 state[action.payload.id] = []
             })
-            .addCase(removeTodolistAC, (state, action) => {
+            .addCase(todolistThunks.removeTodolist.fulfilled, (state, action) => {
                 delete state[action.payload.todoId]
             })
-            .addCase(getTodolistAC, (state, action) => {
+            .addCase(todolistThunks.getTodolist.fulfilled, (state, action) => {
                 action.payload.forEach((tl) => {
                     state[tl.id] = []
                 })

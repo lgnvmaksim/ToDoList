@@ -7,7 +7,7 @@ import React, {useEffect} from "react";
 import {useAppDispatch} from "../../store";
 import {tasksThunks} from "../../reducers/task/taskReducer";
 import {SuperTextField} from "../SuperTextField";
-import {changeTodolistTitleTC, filteredTaskAC, removeTodolistTC} from "../../reducers/todolist/todolistReducer";
+import {filteredTaskAC, todolistThunks} from "../../reducers/todolist/todolistReducer";
 import {Tasks} from "../Tasks";
 import {SuperFilteredButton} from "../SuperFilteredButton";
 import Button from "@mui/material/Button";
@@ -40,11 +40,11 @@ export const Todolist = ({title, todoId, filter, entityStatus}: TodolistType) =>
 
 
     const removeTodolist = (todoId: string) => {
-        dispatch(removeTodolistTC(todoId))
+        dispatch(todolistThunks.removeTodolist(todoId))
     }
 
-    const changeTodolistTitle = (todoId: string, newTitle: string) => {
-        dispatch(changeTodolistTitleTC(todoId, newTitle))
+    const changeTodolistTitle = (todoId: string, title: string) => {
+        dispatch(todolistThunks.changeTodolistTitle({todoId, title}))
     }
 
 
