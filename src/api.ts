@@ -66,13 +66,13 @@ export type TaskMainType = {
 }
 
 export type ModelType={
-    title: string
-    description:string
-    completed: boolean
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
+    title?: string
+    description?:string
+    completed?: boolean
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
 }
 
 export type AuthType={
@@ -92,7 +92,9 @@ export type AddTaskArgType ={
 }
 
 export type ChangeCompletedTask ={
-    todoId: string, taskId: string, status: TaskStatuses
+    todoId: string,
+    taskId: string,
+    model: ModelType
 }
 
 

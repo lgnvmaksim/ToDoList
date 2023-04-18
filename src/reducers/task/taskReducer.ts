@@ -1,7 +1,6 @@
 import {AddTaskArgType, ChangeCompletedTask, ModelType, taskApi, TaskMainType} from "../../api";
 import {addTodolistAC, getTodolistAC, removeTodolistAC} from "../todolist/todolistReducer";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../../store";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../utils/create-app-async-thunk";
@@ -45,7 +44,6 @@ const createTask = createAppAsyncThunk<{ newTask: TaskMainType }, AddTaskArgType
 const changeCompletedOnTask = createAppAsyncThunk<ChangeCompletedTask, ChangeCompletedTask>
 ('task/changeCompletedTask', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
-    //NEED Refactor - status don't save without task's change
     try {
         dispatch(setStatusAC('loading'))
         let tasks = getState().tasks[arg.todoId].find(el => el.id === arg.taskId)
@@ -59,7 +57,8 @@ const changeCompletedOnTask = createAppAsyncThunk<ChangeCompletedTask, ChangeCom
             status: tasks.status,
             priority: tasks.priority,
             startDate: tasks.startDate,
-            deadline: tasks.deadline
+            deadline: tasks.deadline,
+            ...arg.model
         }
         const res = await taskApi.updateTask(arg.todoId, arg.taskId, model)
         if (res.data.resultCode === 0) {
@@ -90,18 +89,15 @@ const slice = createSlice({
                 tasks.splice(index, 1)
             }
         },
-        changeTaskTitleAC(state, action: PayloadAction<{ todoId: string, taskId: string, newTitle: string }>) {
-            const tasks = state[action.payload.todoId]
-            const index = tasks.findIndex(el => el.id === action.payload.taskId)
-            tasks[index].title = action.payload.newTitle
-        }
     },
     extraReducers: builder => {
         builder
             .addCase(changeCompletedOnTask.fulfilled, (state, action) => {
                 const tasks = state[action.payload.todoId]
-                const index = tasks.findIndex(el => el.id === action.payload.taskId)
-                tasks[index].status = action.payload.status
+                const index = tasks.findIndex(t => t.id === action.payload.taskId)
+                if (index !== -1) {
+                    tasks[index] = {...tasks[index], ...action.payload.model}
+                }
             })
             .addCase(createTask.fulfilled, (state, action) => {
                 state[action.payload.newTask.todoListId].unshift(action.payload.newTask)
@@ -124,7 +120,7 @@ const slice = createSlice({
 })
 
 
-export const {removeTaskAC, changeTaskTitleAC} = slice.actions
+export const {removeTaskAC} = slice.actions
 export const taskReducer = slice.reducer
 export const tasksThunks = {getTaskForEmptyTodo, createTask, changeCompletedOnTask}
 
@@ -133,33 +129,4 @@ export const removeTaskTC = (todoId: string, taskId: string) =>
     (dispatch: Dispatch) => {
         taskApi.deleteTask(todoId, taskId)
             .then(() => dispatch(removeTaskAC({todoId, taskId})))
-    }
-
-
-export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
-    (dispatch: Dispatch, getState: () => AppRootStateType) => {
-        let tasks = getState().tasks[todoId].find(el => el.id === taskId)
-        if (tasks) {
-            let model: ModelType = {
-                title: newTitle,
-                description: tasks.description,
-                completed: tasks.completed,
-                status: tasks.status,
-                priority: tasks.priority,
-                startDate: tasks.startDate,
-                deadline: tasks.deadline,
-            }
-            taskApi.updateTask(todoId, taskId, model)
-                .then((res) => {
-                    if (res.data.resultCode === 0) {
-                        dispatch(changeTaskTitleAC({todoId, taskId, newTitle}))
-                    } else {
-                        handleServerAppError(res.data, dispatch)
-                    }
-                })
-                .catch(e => {
-                    handleServerNetworkError(e, dispatch)
-                })
-        }
-
     }

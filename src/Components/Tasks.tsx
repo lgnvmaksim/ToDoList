@@ -7,7 +7,7 @@ import {SuperTextField} from "./SuperTextField";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useAppDispatch, useAppSelector} from "../store";
-import {changeTaskTitleTC, removeTaskTC, tasksThunks} from "../reducers/task/taskReducer";
+import {removeTaskTC, tasksThunks} from "../reducers/task/taskReducer";
 
 
 type TaskType = {
@@ -21,12 +21,12 @@ export const Tasks = ({todoId, filter}: TaskType) => {
 
     const dispatch = useAppDispatch()
 
-    const changeTaskTitle = (todoId: string, taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleTC(todoId, taskId, newTitle))
+    const changeTaskTitle = (todoId: string, taskId: string, title: string) => {
+        dispatch(tasksThunks.changeCompletedOnTask({todoId, taskId, model: {title}}))
     }
 
     const changeCompletedTask = (todoId: string, taskId: string, status: TaskStatuses) => {
-        dispatch(tasksThunks.changeCompletedOnTask({todoId, taskId, status}))
+        dispatch(tasksThunks.changeCompletedOnTask({todoId, taskId, model: {status}}))
     }
 
     const removeTask = (todoId: string, taskId: string) => {
