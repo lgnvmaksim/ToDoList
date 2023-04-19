@@ -5,10 +5,10 @@ import {Header} from "./Components/Header";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "./Components/Login";
 import {useAppDispatch, useAppSelector} from "./store";
-import {meTC} from "./reducers/auth/authReducer";
 import {Preloader} from "./utils/Preloader";
 import Container from "@mui/material/Container";
 import {selectAuth} from "./reducers/auth/authSelector";
+import {authThunks} from "./reducers/auth/authReducer";
 
 
 export const App = () => {
@@ -16,9 +16,8 @@ export const App = () => {
     const isInitialized = useAppSelector(selectAuth)
 
     useEffect(() => {
-        dispatch(meTC())
+        dispatch(authThunks.initializeApp())
     }, [])
-
 
     if (!isInitialized) {
         return <div>

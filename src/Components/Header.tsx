@@ -3,8 +3,8 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {logoutTC} from "../reducers/auth/authReducer";
 import {useAppDispatch, useAppSelector} from "../store";
+import {authThunks} from "../reducers/auth/authReducer";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
@@ -15,7 +15,7 @@ export const Header = () => {
             <Typography variant="h6" component="div" sx={{flexGrow: 1, color: 'white'}}>
                 Todolist by Maxim Loginov
             </Typography>
-            {isLoggedIn && <Button  variant={'outlined'} style={{color: 'white', borderColor:'white'}} onClick={() => dispatch(logoutTC())}>Logout</Button>}
+            {isLoggedIn && <Button  variant={'outlined'} style={{color: 'white', borderColor:'white'}} onClick={() => dispatch(authThunks.logout())}>Logout</Button>}
         </Toolbar>
     </AppBar>
 };

@@ -10,10 +10,10 @@ import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {useAppDispatch, useAppSelector} from "../store";
-import {loginTC} from "../reducers/auth/authReducer";
 import {Navigate} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import {selectIsLoggedIn} from "../reducers/app/appSelector";
+import {authThunks} from "../reducers/auth/authReducer";
 
 
 export const Login = () => {
@@ -34,7 +34,7 @@ export const Login = () => {
                 .required('Required'),
         }),
         onSubmit: values => {
-            dispatch(loginTC(values))
+            dispatch(authThunks.login(values))
             formik.resetForm()
         },
     });
